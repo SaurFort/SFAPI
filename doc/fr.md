@@ -6,11 +6,17 @@ Cette API est utilisé et a été créer par SaurFort
 
 - [Clé d'API](#clé-dapi)
   - [Version 0 (v0)](#version-0-v0)
+    - [Permissions](#permissions)
 - [Utilisation disponible](#utilisation-disponible)
   - [Projet](#projet)
-    - [Arguments](#arguments)
-    - [Exemple de requête](#exemple-de-requête)
+    - [Lecture](#lecture)
+      - [Arguments](#arguments)
+      - [Exemple de requête](#exemple-de-requête)
 - [Codes d'erreurs](#codes-derreurs)
+  - [Code 10](#code-10)
+  - [Code 11](#code-11)
+  - [Code 12](#code-12)
+  - [Code 13](#code-13)
   - [Code 30](#code-30)
   - [Code 90](#code-90)
   - [Code 91](#code-91)
@@ -18,7 +24,7 @@ Cette API est utilisé et a été créer par SaurFort
 
 ## Clé d'API
 
-> [!IMPORTANT]
+> [!IMPORTANT]\
 > Les clés d'API sont distinctes pour chaque version majeure de l'API et possèdent des permissions spécifiques définies en fonction des besoins. Chaque version majeure de l'API a son propre préfixe de clé, permettant ainsi une gestion plus précise et sécurisée des accès.
 
 ### Version 0 (v0)
@@ -28,18 +34,40 @@ Cette API est utilisé et a été créer par SaurFort
   - Exemple : apiv0_123e4567-e89b-12d3-a456-426614174000
 - Description : Les clés d'API de la version 0 commencent par le préfixe apiv0_. Chaque clé est suivie d'un UUID v4 unique, garantissant ainsi l'unicité et la sécurité des accès.
 
+#### Permissions
+
+> [!IMPORTANT]\
+> Il y a toute une liste de permissions pour l'API, si jamais une clé ne possède pas la permission, alors l'API ne voudra pas répondre à la demande.
+
+- __[Projet](#projet)__ :
+  | Fonction | Description | Méthode | Code |
+  | --- | --- | --- | --- |
+  | `CREATE_PROJECTS` | Permet de créer de nouveaux projets. | __POST__ | 0 |
+  | `UPDATE_PROJECTS` | Permet de mettre à jour les informations des projets existants. | __PUT__ | 1 |
+  | `DELETE_PROJECTS` | Permet de supprimer des projets existants. | __DELETE__ | 2 |
+  | `READ_PROJECTS` | Permet de lire les informations des projets. | __GET__ | 3 |
+
 ## Utilisation disponible
 
 > [!IMPORTANT]\
 > Pour tout les exemples nous allons utiliser l'API comme en développemen local `http://localhost/api`.
 
+> [!WARNING]\
+> Pour toute interaction avec l'API, vous devrez mettre votre clé d'API !
+
 ### Projet
 
 > [!NOTE]\
-> Actuellement vous pouvez seulement récupérer les projets de SaurFort avec quelques arguments
+> Actuellement vous pouvez seulement lire les projets.
 > Pour accéder à la partie projet de l'API vous avez besoin de faire des requêtes à `project.php`.
 
-#### Arguments
+#### Lecture
+
+Pour la lecture des projets, la base de votre requête sera la suivante : `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=read`.
+
+Puis vous pourrez écrire les arguments que vous souhaitez pris en charge par la lecture de projet.
+
+##### Arguments
 
 | Name | Description | Type | Default value |
 | --- | --- | --- | --- |
@@ -50,14 +78,14 @@ Cette API est utilisé et a été créer par SaurFort
 | `limit` | Limite le nombre de résultat rendu par l'API. | int | -1 (all project) |
 
 > [!NOTE]\
-> > Pour le moment, __`lang`__ supporte uniquement l'Anglais (en) et le Français (fr).
+> Pour le moment, __`lang`__ supporte uniquement l'Anglais (en) et le Français (fr).
 > __`sort`__ accepte uniquement deux valeurs: `latest` ou `oldest`.
 > __`filtertype`__ accepte uniquement deux valeurs: `id` ou `name`.
 
 > [!WARNING]\
 > Si __`filter`__ est défini et que `filtertype` n'est pas définie, une erreur peut apparaître.
 
-#### Exemple de requête
+##### Exemple de requête
 
 - Prenons les projets en français et trier du plus récent au plus ancien:
 
@@ -169,9 +197,31 @@ Cette API est utilisé et a été créer par SaurFort
 
 | Code | Description | Variation |
 | --- | --- | --- |
+| 10 | Clé d'API vide | _none_ |
+| 11 | Clé d'API incompatible avec la version | _none_ |
+| 12 | La clé d'API n'a pas la permission demandé | _none_ |
+| 13 | La clé d'API est incorrecte | _none_ |
 | 30 | Argument invalide pour les projets | A,B,C,D,E |
 | 90 | Erreur dans une requête SQL | _aucune_ |
 | 91 | Le résultat de la requête SQL est vide  | _none_ |
+
+### Code 10
+
+Ce code indique que la clé d'API n'a pas été définie dans la requête.
+
+### Code 11
+
+Ce code indique que la clé d'API saisi n'est pas compatible avec la version actuel de l'API vous référez au [clé d'API](#clé-dapi).
+
+### Code 12
+
+Ce code indique que la clé n'a pas les permissions nécessaire pour interargir avec la fonction demandé.
+Essayez d'utiliser une autre clé d'API ou de contacter l'administrateur de l'API.
+
+### Code 13
+
+Ce code indique que la clé d'API est incorrecte, elle ne permet pas d'utiliser l'API ou du moins, cette version.
+Si vous êtes sûr que la clé doit fonctionner, contacter l'administrateur de l'API.
 
 ### Code 30
 
