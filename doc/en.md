@@ -4,6 +4,8 @@ This is the API used and created by SaurFort.
 
 ## Summary <!-- omit in toc -->
 
+- [API key](#api-key)
+  - [Version 0 (v0)](#version-0-v0)
 - [Usage available](#usage-available)
   - [Project](#project)
     - [Arguments](#arguments)
@@ -13,6 +15,18 @@ This is the API used and created by SaurFort.
   - [Code 90](#code-90)
   - [Code 91](#code-91)
 - [Versions](#versions)
+
+## API key
+
+> [!IMPORTANT]
+> API keys are distinct for each major API version and have specific permissions defined according to requirements. Each major API version has its own key prefix, enabling more precise and secure access management.
+
+### Version 0 (v0)
+
+- API key prefix: apiv0_
+- Complete API key format for v0: apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  - Example: apiv0_123e4567-e89b-12d3-a456-426614174000
+- Description: Version 0 API keys begin with the prefix apiv0_. Each key is followed by a unique v4 UUID, guaranteeing unique and secure access.
 
 ## Usage available
 
@@ -35,7 +49,7 @@ This is the API used and created by SaurFort.
 | `filter` | Permit to define the value of filter. | string | _null_ |
 | `limit` | Limit the number of projects sorted. | int | -1 (all project) |
 
-> [!INFO]\
+> [!NOTE]\
 > > For the moment, `lang` supports only English (en) and French (fr).
 > `sort` accepts only two values: `latest` or `oldest`.
 > `filtertype` accepts only two values: `id` or `name`.
@@ -179,7 +193,7 @@ This code indicates that the SQL query executed successfully but returned no row
 
 ## Versions
 
-> [!INFO]\
+> [!NOTE]\
 > List of all versions and whether they are still active or not.
 
 > [!IMPORTANT]\

@@ -4,6 +4,8 @@ Cette API est utilisé et a été créer par SaurFort
 
 ## Sommaire <!-- omit in toc -->
 
+- [Clé d'API](#clé-dapi)
+  - [Version 0 (v0)](#version-0-v0)
 - [Utilisation disponible](#utilisation-disponible)
   - [Projet](#projet)
     - [Arguments](#arguments)
@@ -13,6 +15,18 @@ Cette API est utilisé et a été créer par SaurFort
   - [Code 90](#code-90)
   - [Code 91](#code-91)
 - [Versions](#versions)
+
+## Clé d'API
+
+> [!IMPORTANT]
+> Les clés d'API sont distinctes pour chaque version majeure de l'API et possèdent des permissions spécifiques définies en fonction des besoins. Chaque version majeure de l'API a son propre préfixe de clé, permettant ainsi une gestion plus précise et sécurisée des accès.
+
+### Version 0 (v0)
+
+- Préfixe de clé d'API : apiv0_
+- Format complet des clés d'API pour la v0 : apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  - Exemple : apiv0_123e4567-e89b-12d3-a456-426614174000
+- Description : Les clés d'API de la version 0 commencent par le préfixe apiv0_. Chaque clé est suivie d'un UUID v4 unique, garantissant ainsi l'unicité et la sécurité des accès.
 
 ## Utilisation disponible
 
@@ -35,7 +49,7 @@ Cette API est utilisé et a été créer par SaurFort
 | `filter` | Permet de filtrer par l'id ou le nom. | string | _null_ |
 | `limit` | Limite le nombre de résultat rendu par l'API. | int | -1 (all project) |
 
-> [!INFO]\
+> [!NOTE]\
 > > Pour le moment, __`lang`__ supporte uniquement l'Anglais (en) et le Français (fr).
 > __`sort`__ accepte uniquement deux valeurs: `latest` ou `oldest`.
 > __`filtertype`__ accepte uniquement deux valeurs: `id` ou `name`.
@@ -179,7 +193,7 @@ Ce code indique que la requête SQL a été exécuter avec succès mais qu'il n'
 
 ## Versions
 
-> [!INFO]\
+> [!NOTE]\
 > Liste de toutes les versions et de si elles sont toujours active ou non.
 
 > [!IMPORTANT]\
