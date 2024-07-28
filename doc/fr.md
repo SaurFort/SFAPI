@@ -1,4 +1,4 @@
-# SaurFort's API <!-- omit in toc -->
+# SFAPI <!-- omit in toc -->
 
 Cette API est utilisé et a été créer par SaurFort
 
@@ -8,6 +8,9 @@ Cette API est utilisé et a été créer par SaurFort
   - [Version 0 (v0)](#version-0-v0)
     - [Permissions](#permissions)
 - [Utilisation disponible](#utilisation-disponible)
+  - [Compte](#compte)
+    - [Connexion](#connexion)
+      - [Connexion - Arguments](#connexion---arguments)
   - [Projet](#projet)
     - [Lecture](#lecture)
       - [Arguments](#arguments)
@@ -42,18 +45,36 @@ Cette API est utilisé et a été créer par SaurFort
 - __[Projet](#projet)__ :
   | Fonction | Description | Méthode | Code |
   | --- | --- | --- | --- |
-  | `CREATE_PROJECTS` | Permet de créer de nouveaux projets. | __POST__ | 0 |
-  | `UPDATE_PROJECTS` | Permet de mettre à jour les informations des projets existants. | __PUT__ | 1 |
-  | `DELETE_PROJECTS` | Permet de supprimer des projets existants. | __DELETE__ | 2 |
-  | `READ_PROJECTS` | Permet de lire les informations des projets. | __GET__ | 3 |
+  | `REGISTER_USER` | Vous permez d'enregistrer de nouveaux utilisateurs sur le réseau | __POST__ | 0 |
+  | `LOGIN_USER` | Vous permez de connecter les utilisateurs | __POST__ | 1 |
+  | `CREATE_PROJECTS` | Permet de créer de nouveaux projets. | __POST__ | 2 |
+  | `UPDATE_PROJECTS` | Permet de mettre à jour les informations des projets existants. | __PUT__ | 3 |
+  | `DELETE_PROJECTS` | Permet de supprimer des projets existants. | __DELETE__ | 4 |
+  | `READ_PROJECTS` | Permet de lire les informations des projets. | __GET__ | 5 |
 
 ## Utilisation disponible
 
 > [!IMPORTANT]\
 > Pour tout les exemples nous allons utiliser l'API comme en développemen local `http://localhost/api`.
-
 > [!WARNING]\
 > Pour toute interaction avec l'API, vous devrez mettre votre clé d'API !
+
+### Compte
+
+> [!NOTE]\
+> Tout les comptes enregistrer dans l'API seront disponible sur toutes les applications utilisant l'API et si elles ont les perissions correspondante.
+> Pour toutes les interactions avec l'API de compte, vous avez besoin de faire vos requête à l'url `http://localhost/api/account/`.
+
+#### Connexion
+
+> [!IMPORTANT]\
+> Pour connecter un utilisateur, vous avez besoin de faire une requête à l'url : `http://localhost/api/account/login.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> L'API de connexion prends uniquement les requêtes __POST__.
+> L'API de connexion accepte uniquement les données json brut.
+
+##### Connexion - Arguments
+
+
 
 ### Projet
 

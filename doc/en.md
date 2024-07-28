@@ -88,7 +88,7 @@ This is the API used and created by SaurFort.
 ### Account
 
 > [!NOTE]\
-> All accounts registered in the API will be available on application using the API and if there have the corresponding permissions.
+> All accounts registered in the API will be available on all application using the API and if there have the corresponding permissions.
 > For all interaction with the Account API, you need to make your query to `http://localhost/api/account/`.
 
 #### Login
