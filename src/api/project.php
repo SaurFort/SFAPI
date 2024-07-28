@@ -3,7 +3,7 @@
     header("Content-Type: application/json; charset=UTF-8");
 
     require('../config.php');
-    include('../database.php');
+    include('database.php');
     include('checker.php');
 
     $key = isset($_GET['key']) ? $_GET['key'] : "";
