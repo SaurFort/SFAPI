@@ -9,15 +9,28 @@ This is the API used and created by SaurFort.
     - [Permissions](#permissions)
 - [Usage available](#usage-available)
   - [Project](#project)
-    - [Read](#read)
+    - [Create](#create)
       - [Arguments](#arguments)
       - [Example Requests](#example-requests)
+    - [Update](#update)
+      - [Arguments](#arguments-1)
+      - [Example Request](#example-request)
+    - [Delete](#delete)
+      - [Arguments](#arguments-2)
+      - [Example Requests](#example-requests-1)
+    - [Read](#read)
+      - [Arguments](#arguments-3)
+      - [Example Requests](#example-requests-2)
 - [Error Codes](#error-codes)
   - [Code 10](#code-10)
   - [Code 11](#code-11)
   - [Code 12](#code-12)
   - [Code 13](#code-13)
   - [Code 30](#code-30)
+  - [Code 31](#code-31)
+  - [Code 32](#code-32)
+  - [Code 33](#code-33)
+  - [Code 34](#code-34)
   - [Code 90](#code-90)
   - [Code 91](#code-91)
 - [Versions](#versions)
@@ -61,11 +74,129 @@ This is the API used and created by SaurFort.
 > Actually you can only get projects of SaurFort with some arguments.
 > To access the project's API you need to request `project.php`.
 
+#### Create
+
+> [!IMPORTANT]\
+> For create projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=create`.
+> Don't forgot to make your query with the method __POST__.
+
+> [!WARNING]\
+> API only accept raw json for create query.
+
+##### Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| __`name`__ | Set the project's name | string _(VARCHAR(30)_) |
+| __`technologies`__ | Set technologies used for project | string _(TEXT)_ |
+| `creation` | Set the creation date of the project | string (DATE) |
+| __`description-en`__ | Set the English description of the project | string _(TEXT)_ |
+| `description-fr` | Set the French description of the project | string _(TEXT)_ |
+
+> [!IMPORTANT]\
+> Bold arguments are necessary for any create query.
+> `creation` field is under the format: `Y-m-d`, if you don't set a value for it, the date of day will be taken.
+
+##### Example Requests
+
+```json
+{
+  "name": "Project Alpha",
+  "technologies": "PHP, MySQL, JavaScript",
+  "description-en": "This is a project description in English.",
+}
+```
+
+```json
+{
+  "name": "Project Alpha",
+  "technologies": "PHP, MySQL, JavaScript",
+  "creation": "2024-07-27",
+  "description-en": "This is a project description in English.",
+  "description-fr": "Ceci est une description du projet en français."
+}
+```
+
+#### Update
+
+> [!IMPORTANT]\
+> For update projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=update`.
+> Don't forgot to make your query with the method __PUT__.
+
+> [!WARNING]\
+> API only accept raw json for update query.
+
+##### Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| __`id`__ | Find the corresponding project and translations | int (INT) |
+| `name` | Set the project's name | string _(VARCHAR(30)_) |
+| `technologies` | Set technologies used for project | string _(TEXT)_ |
+| `creation` | Set the creation date of the project | string (DATE) |
+| `description-en` | Set the English description of the project | string _(TEXT)_ |
+| `description-fr` | Set the French description of the project | string _(TEXT)_ |
+
+> [!IMPORTANT]\
+> Bold argument is necessary for any update query.
+> You're not forced to put all data just the data you want to be updated.
+
+##### Example Request
+
+```json
+{
+  "id": 1,
+  "description-fr": "Description du projet mise à jour en français."
+}
+```
+
+```json
+{
+  "id": 1,
+  "name": "Updated Project Alpha",
+  "technologies": "PHP, MySQL, JavaScript, Node.js",
+  "description-en": "Updated project description in English.",
+  "description-fr": "Description du projet mise à jour en français."
+}
+```
+
+#### Delete
+
+> [!IMPORTANT]\
+> For delete projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=delete`.
+> Don't forgot to make your query with the method __DELETE__.
+
+> [!WARNING]\
+> API only accept raw json for delete query.
+
+##### Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| __`id`__ | Find the corresponding project and translations | int (INT) |
+
+> [!WARNING]\
+> If the `id` is not defined the API can't delete anything
+
+> [!IMPORTANT]\
+> When you delete a project, everything is deleted, project and project's translations.
+
+##### Example Requests
+
+```json
+{
+  "id": 1
+}
+```
+
 #### Read
 
-For reading projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=read`.
+> [!IMPORTANT]\
+> For reading projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=read`.
+> Don't forgot to make your query with the method __GET__.
 
-Then you can write the arguments you want the project to read.
+> [!NOTE]\
+> Reading a project doesn't require any arguments to be accessible.
 
 ##### Arguments
 
@@ -201,9 +332,14 @@ Then you can write the arguments you want the project to read.
 | 11 | API key incompatible with version | _none_ |
 | 12 | API key does not have requested permission | _none_ |
 | 13 | Incorrect API key | _none_ |
-| 30 | Invalid argument for project | A,B,C,D,E |
+| 30 | Invalid action for project | _none_ |
+| 31 | Invalid argument for create project action | _none_ |
+| 32 | Invalid argument for update project action | _none_ |
+| 33 | Invalid argument for delete project action | _none_ |
+| 34 | Invalid argument for read project action | A,B,C,D,E |
 | 90 | SQL query error | _none_ |
 | 91 | SQL query result is empty | _none_ |
+| 92 | Error when preparing SQL query | _none_ |
 
 ### Code 10
 
@@ -225,13 +361,29 @@ If you are sure the key should work, contact the API administrator.
 
 ### Code 30
 
-This code indicates an invalid argument for the project part of the API.
+This code indicates that the action you have attempted is not a valid action for the project.
 
-- __30A__: Invalid argument for __`sort`__ (for example, a value other than `latest` or `oldest` is supplied).
-- __30B__: Invalid argument for __`lang`__ (for example, a language other than `en` or `fr` is supplied).
-- __30C__: Invalid filter type for __`filtertype`__ (for example, a value other than `id` or `name` is supplied).
-- __30D__: The __`filter`__ is empty when `filtertype` is defined (for example, the `filter` parameter is absent or is an empty string when `filtertype` is specified).
-- __30E__: __`filtertype`__ is set to `id` but the `filter` is not a valid ID (for example, `filter` is a non-numeric string whereas `filtertype` is `id`).
+### Code 31
+
+This code indicates an invalid argument for the create project's action.
+
+### Code 32
+
+This code indicates an invalid argument for the update project's action.
+
+### Code 33
+
+This code indicates an invalid argument for the delete project's action.
+
+### Code 34
+
+This code indicates an invalid argument for the read project's action.
+
+- __34A__: Invalid argument for __`sort`__ (for example, a value other than `latest` or `oldest` is supplied).
+- __34B__: Invalid argument for __`lang`__ (for example, a language other than `en` or `fr` is supplied).
+- __34C__: Invalid filter type for __`filtertype`__ (for example, a value other than `id` or `name` is supplied).
+- __34D__: The __`filter`__ is empty when `filtertype` is defined (for example, the `filter` parameter is absent or is an empty string when `filtertype` is specified).
+- __34E__: __`filtertype`__ is set to `id` but the `filter` is not a valid ID (for example, `filter` is a non-numeric string whereas `filtertype` is `id`).
 
 ### Code 90
 
