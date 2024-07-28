@@ -221,10 +221,56 @@
                 echo json_encode(["message" => "The project and its translations were successfully updated."]);
             } else {
                 echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
+                exit;
             }
 
         } else {
             echo json_encode(["code" => PROJECT_UPDATE_ARGUMENT_ERROR, "message" => "No fields to update."]);
+        }
+    }
+
+
+    // If the action is "delete", execute the corresponding query
+    if ($action === "delete" && $_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        if (!isset($data['id'])) {
+            echo json_encode(["code" => PROJECT_DELETE_ARGUMENT_ERROR, "message" => "Missing project ID for deletion."]);
+            exit;
+        }
+
+        $query = "DELETE FROM projects WHERE id = ?";
+        $stmt = $conn->prepare($query);
+
+        if ($stmt === false) {
+            echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
+            exit;
+        }
+
+        $stmt->bind_param("i", $data['id']);
+
+        if($stmt->execute()) {
+            $stmt->close();
+
+            $query = "DELETE FROM project_translations WHERE project_id = ?";
+            $stmt = $conn->prepare($query);
+
+            if ($stmt === false) {
+                echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
+                exit;
+            }
+
+            $stmt->bind_param("i", $data['id']);
+
+            if($stmt->execute()) {
+                echo json_encode(["message" => "Successfully delete project and translations."]);
+            } else {
+                echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
+                exit;
+            }
+        } else {
+            echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
+            exit;
         }
     }
 
