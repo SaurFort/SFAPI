@@ -8,24 +8,39 @@ This is the API used and created by SaurFort.
   - [Version 0 (v0)](#version-0-v0)
     - [Permissions](#permissions)
 - [Usage available](#usage-available)
+  - [Account](#account)
+    - [Login](#login)
+      - [Login - Arguments](#login---arguments)
+      - [Login - Example Requests](#login---example-requests)
+    - [Register](#register)
+      - [Register - Arguments](#register---arguments)
+      - [Register - Password Hash](#register---password-hash)
+      - [Register - Example Requests](#register---example-requests)
   - [Project](#project)
     - [Create](#create)
-      - [Arguments](#arguments)
-      - [Example Requests](#example-requests)
+      - [Create - Arguments](#create---arguments)
+      - [Create - Example Requests](#create---example-requests)
     - [Update](#update)
-      - [Arguments](#arguments-1)
-      - [Example Request](#example-request)
+      - [Update - Arguments](#update---arguments)
+      - [Update - Example Request](#update---example-request)
     - [Delete](#delete)
-      - [Arguments](#arguments-2)
-      - [Example Requests](#example-requests-1)
+      - [Delete - Arguments](#delete---arguments)
+      - [Delete - Example Requests](#delete---example-requests)
     - [Read](#read)
-      - [Arguments](#arguments-3)
-      - [Example Requests](#example-requests-2)
-- [Error Codes](#error-codes)
+      - [Read - Arguments](#read---arguments)
+      - [Read - Example Requests](#read---example-requests)
+- [API Codes](#api-codes)
+  - [Code 01](#code-01)
+  - [Code 02](#code-02)
   - [Code 10](#code-10)
   - [Code 11](#code-11)
   - [Code 12](#code-12)
   - [Code 13](#code-13)
+  - [Code 14](#code-14)
+  - [Code 15](#code-15)
+  - [Code 16](#code-16)
+  - [Code 17](#code-17)
+  - [Code 18](#code-18)
   - [Code 30](#code-30)
   - [Code 31](#code-31)
   - [Code 32](#code-32)
@@ -51,22 +66,150 @@ This is the API used and created by SaurFort.
 
 > [!IMPORTANT]\
 > There's a whole list of permissions for the API, so if a key doesn't have the permission, the API won't respond to the request.
+> You can refer to the [config file](../src/config.php) for all permissions and permissions code definitions.
 
 - __[Project](#project)__ :
   | Function | Description | Method | Code |
   | --- | --- | --- | --- |
-  | `CREATE_PROJECTS` | Create new projects | __POST__ | 0 |
-  | `UPDATE_PROJECTS` | Allows you to update information on existing projects. | __PUT__ | 1 |
-  | `DELETE_PROJECTS` | Delete existing projects. | __DELETE__ | 2 |
-  | `READ_PROJECTS`| Allows you to read project information. | __GET__ | 3 |
+  | `REGISTER_USER` | Allows you to register new users on the network | __POST__ | 0 |
+  | `LOGIN_USER` | Allow you to login user | __POST__ | 1 |
+  | `CREATE_PROJECTS` | Create new projects | __POST__ | 2 |
+  | `UPDATE_PROJECTS` | Allows you to update information on existing projects. | __PUT__ | 3 |
+  | `DELETE_PROJECTS` | Delete existing projects. | __DELETE__ | 4 |
+  | `READ_PROJECTS`| Allows you to read project information. | __GET__ | 5 |
 
 ## Usage available
 
 > [!IMPORTANT]\
 > For all examples, we're gonna use the API like in local development `http://localhost/api`.
-
 > [!WARNING]\
 > For any interaction with the API, you'll need to enter your API key!
+
+### Account
+
+> [!NOTE]\
+> All accounts registered in the API will be available on application using the API and if there have the corresponding permissions.
+> For all interaction with the Account API, you need to make your query to `http://localhost/api/account/`.
+
+#### Login
+
+> [!IMPORTANT]\
+> For login an user, you need to make your query at: `http://localhost/api/account/login.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> Login API only takes __POST__ query.
+> Login API accept only raw json data.
+
+##### Login - Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| `username` | Username of the user | string |
+| `email` | Email address of the user | string |
+| `password` | Password of the user | string |
+
+> [!NOTE]\
+> You can authenticate the user with his username or email address or the both.
+> [!WARNING]\
+> You need at least one identifier between `username` and `email` to authenticate the user.
+> The `username` field is case sensitive.
+> The `password` field is necessary, the API won't accept an empty password.
+
+##### Login - Example Requests
+
+- Recommended login query body:
+
+  ```json
+  {
+    "email": "email@example.com",
+    "password": "password"
+  }
+  ```
+
+  - Depreciated login query body:
+
+  ```json
+  {
+    "username": "John Doe",
+    "password": "password"
+  }
+  ```
+
+  - Best login query body:
+
+  ```json
+  {
+    "username": "John Doe",
+    "email": "email@example.com",
+    "password": "password"
+  }
+  ```
+
+#### Register
+
+> [!IMPORTANT]\
+> For register an user, you need to make your query at: `http://localhost/api/account/register.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> Register API only takes __POST__ query.
+> Register API accept only raw json data.
+
+##### Register - Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| `username` | Username of the user | string (VARCHAR(35)) |
+| `email` | Email address of the user | string (VARCHAR(55)) |
+| `password` | Password of the user | string (TEXT) |
+| `confirmationPassword` | Password confirmation of the user | string (TEXT) |
+| `rank` | Rank of the user | string (TEXT) |
+
+> [!IMPORTANT]\
+> `password` field store the password destinated to be hashed so you can hash it before giving to the API but it's very important to respect exactly the [algorithm and parameters](#register---password-hash) used by the API.
+> [!WARNING]\
+> `username`, `email`, `password` and `confirmationPassword` fields are necessary in the query body.
+> [!NOTE]\
+> `rank` field is not required because if it's not defined the user will obtain the rank __user__. Rank don't have determined permissions by the API because it's at application using the API to define their permissions.
+
+##### Register - Password Hash
+
+> [!IMPORTANT]\
+> The API used the algorithm __Argon2id__, it's a recent algorithm with excellent security performance againt brute-force.
+> [!WARNING]\
+> If you trying to used an other algorithm, the API will refuse your registration.
+> If you trying to used __Argon2id__ but not with the same parameters of the API, the API will refuse your registration.
+
+| Parameter name | API used value |
+| --- | --- |
+| __Parallelism Factor__ | `1` |
+| __Memory Cost__ | `65536` |
+| __Iterations__ | `4` |
+| __Hash Length__ | `19` |
+
+> [!NOTE]\
+> The API don't set manually the salt of the algorithm because it's generated randomly for a better security.
+> To see if your algorithm is correctly configured you just need to check the start of your hashed password and if it's exactly the same at `$argon2id$v=19$m=65536,t=4,p=1` then your algorithm is correctly configured.
+
+##### Register - Example Requests
+
+- Register a user without rank:
+
+  ```json
+  {
+    "username": "John Doe",
+    "email": "email@example.com",
+    "password": "password",
+    "confirmationPassword": "password"
+  }
+  ```
+
+  - Register a user with rank:
+
+  ```json
+  {
+    "username": "John Doe",
+    "email": "email@example.com",
+    "password": "password",
+    "confirmationPassword": "password",
+    "rank": "admin"
+  }
+  ```
 
 ### Project
 
@@ -79,11 +222,10 @@ This is the API used and created by SaurFort.
 > [!IMPORTANT]\
 > For create projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=create`.
 > Don't forgot to make your query with the method __POST__.
-
 > [!WARNING]\
 > API only accept raw json for create query.
 
-##### Arguments
+##### Create - Arguments
 
 | Name | Description | Type |
 | --- | --- | --- |
@@ -97,7 +239,7 @@ This is the API used and created by SaurFort.
 > Bold arguments are necessary for any create query.
 > `creation` field is under the format: `Y-m-d`, if you don't set a value for it, the date of day will be taken.
 
-##### Example Requests
+##### Create - Example Requests
 
 ```json
 {
@@ -122,11 +264,10 @@ This is the API used and created by SaurFort.
 > [!IMPORTANT]\
 > For update projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=update`.
 > Don't forgot to make your query with the method __PUT__.
-
 > [!WARNING]\
 > API only accept raw json for update query.
 
-##### Arguments
+##### Update - Arguments
 
 | Name | Description | Type |
 | --- | --- | --- |
@@ -141,7 +282,7 @@ This is the API used and created by SaurFort.
 > Bold argument is necessary for any update query.
 > You're not forced to put all data just the data you want to be updated.
 
-##### Example Request
+##### Update - Example Request
 
 ```json
 {
@@ -165,11 +306,10 @@ This is the API used and created by SaurFort.
 > [!IMPORTANT]\
 > For delete projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=delete`.
 > Don't forgot to make your query with the method __DELETE__.
-
 > [!WARNING]\
 > API only accept raw json for delete query.
 
-##### Arguments
+##### Delete - Arguments
 
 | Name | Description | Type |
 | --- | --- | --- |
@@ -177,11 +317,10 @@ This is the API used and created by SaurFort.
 
 > [!WARNING]\
 > If the `id` is not defined the API can't delete anything
-
 > [!IMPORTANT]\
 > When you delete a project, everything is deleted, project and project's translations.
 
-##### Example Requests
+##### Delete - Example Requests
 
 ```json
 {
@@ -194,11 +333,10 @@ This is the API used and created by SaurFort.
 > [!IMPORTANT]\
 > For reading projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=read`.
 > Don't forgot to make your query with the method __GET__.
-
 > [!NOTE]\
 > Reading a project doesn't require any arguments to be accessible.
 
-##### Arguments
+##### Read - Arguments
 
 | Name | Description | Type | Default value |
 | --- | --- | --- | --- |
@@ -212,11 +350,10 @@ This is the API used and created by SaurFort.
 > For the moment, `lang` supports only English (en) and French (fr).
 > `sort` accepts only two values: `latest` or `oldest`.
 > `filtertype` accepts only two values: `id` or `name`.
-
 > [!WARNING]\
 > If `filter` is defined and `filtertype` is not provided, an error may occur.
 
-##### Example Requests
+##### Read - Example Requests
 
 - Gets French project, sorted by latest:
 
@@ -321,17 +458,24 @@ This is the API used and created by SaurFort.
   ]
   ```
 
-## Error Codes
+## API Codes
 
 > [!IMPORTANT]\
-> Since this API is not intended for use by other users, the error codes have been customized.
+> All of this code has been maded to be more informative.
 
 | Code | Description | Variation |
 | --- | --- | --- |
+| 01 | Query has been complete successfully | _none_ |
+| 02 | Invalid method | _none_ |
 | 10 | Empty API key | _none_ |
 | 11 | API key incompatible with version | _none_ |
 | 12 | API key does not have requested permission | _none_ |
 | 13 | Incorrect API key | _none_ |
+| 14 | Invalid argument for register | A,B,C,D |
+| 15 | Invalid password for register | A,B,C,D |
+| 16 | Account already registered | _none_ |
+| 17 | Invalid argument for login | A,B |
+| 18 | Login account failed | _none_ |
 | 30 | Invalid action for project | _none_ |
 | 31 | Invalid argument for create project action | _none_ |
 | 32 | Invalid argument for update project action | _none_ |
@@ -340,6 +484,14 @@ This is the API used and created by SaurFort.
 | 90 | SQL query error | _none_ |
 | 91 | SQL query result is empty | _none_ |
 | 92 | Error when preparing SQL query | _none_ |
+
+### Code 01
+
+This code indicates that the query has been completed successfully by the API.
+
+### Code 02
+
+This codes indicates an invalid method when calling the API. To be sure you can [refer to permissions](#permissions) where all methods are refered, else you can check the corresponding section.
 
 ### Code 10
 
@@ -358,6 +510,39 @@ Try using another API key or contact the API administrator.
 
 This code indicates that the API key is incorrect, and will not allow you to use the API, or at least this version of it.
 If you are sure the key should work, contact the API administrator.
+
+### Code 14
+
+This code indicates an invalid argument for registration.
+
+- __14A__: Argument `username` is not defined.
+- __14B__: Argument `email` is not defined.
+- __14C__: Argument `password` is not defined.
+- __14D__: Argument `confirmationPassword` is not defined.
+
+### Code 15
+
+This code indicates an invalid password for registration.
+
+- __15A__: Argument `password` is already hashed but the algorithm is not supported by the API. (For example, you have used Bcrypt or Argon2i or any other algorithm).
+- __15B__: Argument `password` used the correct algorithm but not the right parameters. (For example, you have make an error when you've done the parameters of algorithm).
+- __15C__: Arguments `password` and `confirmationPassword` are not the same. (For example, you've used an algorithm that haven't been referenced in not supported algorithms).
+- __15D__: Argument `password` was not hashed correctly by the API. Just retry and if the problem persists contact you API administrator.
+  
+### Code 16
+
+This code indicates that the username or email address is already used on an other account.
+
+### Code 17
+
+This code indicates an invalid argument for login.
+
+- __17A__: Arguments `username` and `email` haven't been defined but you need at least one of both, [refer to login example](#login---example-requests).
+- __17B__: Argument `password` is not defined.
+
+### Code 18
+
+This code is a generic code to say that the credentials are not valid but for security the API will never return what in credentials is not valid.
 
 ### Code 30
 
@@ -397,6 +582,8 @@ This code indicates that the SQL query executed successfully but returned no row
 
 > [!NOTE]\
 > List of all versions and whether they are still active or not.
+> Early development versions are listed but are not hosted on a public server.
 
-> [!IMPORTANT]\
-> At present, no versions are listed, as the API is not at a sufficiently advanced stage of development.
+| Version | Version Type | Status |
+| --- | --- | --- |
+| v0.6.0 | `early development` | __private__ |
