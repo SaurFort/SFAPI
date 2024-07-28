@@ -21,6 +21,7 @@
     define("API_KEY_WRONG", "13");
     define("PROJECT_ACTION_ERROR", "30");
     define("PROJECT_CREATE_ARGUMENT_ERROR", "31");
+    define("PROJECT_UPDATE_ARGUMENT_ERROR", "32");
     define("PROJECT_READ_ARGUMENT_ERROR", "34");
     define("SQL_QUERY_ERROR", "90");
     define("SQL_QUERY_EMPTY_ROW_ERROR", "91");

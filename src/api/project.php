@@ -129,6 +129,105 @@
         }
     }
 
+    // If the action is "update", execute the corresponding query
+    if ($action === "update" && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        if (!isset($data['id'])) {
+            echo json_encode(["code" => PROJECT_UPDATE_ARGUMENT_ERROR, "message" => "Missing parameters for project update."]);
+            exit;
+        }
+
+        $fields = [];
+        $types = '';
+        $values = [];
+
+        if (isset($data['name'])) {
+            $fields[] = "name = ?";
+            $types .= 's';
+            $values[] = $data['name'];
+        }
+        if (isset($data['technologies'])) {
+            $fields[] = "technologies = ?";
+            $types .= 's';
+            $values[] = $data['technologies'];
+        }
+        if (isset($data['creation'])) {
+            $fields[] = "creation = ?";
+            $types .= 's';
+            $values[] = $data['creation'];
+        }
+
+        // Add the ID to the values array
+        $values[] = $data['id'];
+        $types .= 'i';
+
+        if (count($fields) > 0) {
+            $query = "UPDATE projects SET " . implode(", ", $fields) . " WHERE id = ?";
+            $stmt = $conn->prepare($query);
+
+            if ($stmt === false) {
+                echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
+                exit;
+            }
+
+            // Using the spread operator to pass parameters
+            $stmt->bind_param($types, ...$values);
+
+            if ($stmt->execute()) {
+                $stmt->close();
+
+                // Update the translations if provided
+                if (isset($data['description-en'])) {
+                    $query = "UPDATE project_translations SET description = ? WHERE project_id = ? AND language = 'en'";
+                    $stmt = $conn->prepare($query);
+
+                    if ($stmt === false) {
+                        echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
+                        exit;
+                    }
+
+                    $stmt->bind_param('si', $data['description-en'], $data['id']);
+
+                    if (!$stmt->execute()) {
+                        echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
+                        $stmt->close();
+                        exit;
+                    }
+
+                    $stmt->close();
+                }
+
+                if (isset($data['description-fr'])) {
+                    $query = "UPDATE project_translations SET description = ? WHERE project_id = ? AND language = 'fr'";
+                    $stmt = $conn->prepare($query);
+
+                    if ($stmt === false) {
+                        echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
+                        exit;
+                    }
+
+                    $stmt->bind_param('si', $data['description-fr'], $data['id']);
+
+                    if (!$stmt->execute()) {
+                        echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
+                        $stmt->close();
+                        exit;
+                    }
+
+                    $stmt->close();
+                }
+
+                echo json_encode(["message" => "The project and its translations were successfully updated."]);
+            } else {
+                echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
+            }
+
+        } else {
+            echo json_encode(["code" => PROJECT_UPDATE_ARGUMENT_ERROR, "message" => "No fields to update."]);
+        }
+    }
+
     // If the action is "read", execute the corresponding query
     if ($action === "read") {
         $lang = isset($_GET['lang']) ? $_GET['lang'] : 'en';
