@@ -1,12 +1,12 @@
 # SFAPI <!-- omit in toc -->
 
-This is the API used and created by SaurFort.
+This API is made to centralize data from different applications and by example simplyfy account credentials by making it accessible to all applications (if they have the corresponding permissions).
 
 ## Summary <!-- omit in toc -->
 
 - [API key](#api-key)
   - [Version 0 (v0)](#version-0-v0)
-    - [Permissions](#permissions)
+  - [Permissions](#permissions)
 - [Usage available](#usage-available)
   - [Account](#account)
     - [Login](#login)
@@ -16,19 +16,23 @@ This is the API used and created by SaurFort.
       - [Register - Arguments](#register---arguments)
       - [Register - Password Hash](#register---password-hash)
       - [Register - Example Requests](#register---example-requests)
+  - [Mailer](#mailer)
+    - [Send](#send)
+      - [Send - Arguments](#send---arguments)
+      - [Send - Example Requests](#send---example-requests)
   - [Project](#project)
     - [Create](#create)
       - [Create - Arguments](#create---arguments)
       - [Create - Example Requests](#create---example-requests)
+    - [Read](#read)
+      - [Read - Arguments](#read---arguments)
+      - [Read - Example Requests](#read---example-requests)
     - [Update](#update)
       - [Update - Arguments](#update---arguments)
       - [Update - Example Request](#update---example-request)
     - [Delete](#delete)
       - [Delete - Arguments](#delete---arguments)
       - [Delete - Example Requests](#delete---example-requests)
-    - [Read](#read)
-      - [Read - Arguments](#read---arguments)
-      - [Read - Example Requests](#read---example-requests)
 - [API Codes](#api-codes)
   - [Code 01](#code-01)
   - [Code 02](#code-02)
@@ -41,19 +45,23 @@ This is the API used and created by SaurFort.
   - [Code 16](#code-16)
   - [Code 17](#code-17)
   - [Code 18](#code-18)
+  - [Code 20](#code-20)
+  - [Code 21](#code-21)
+  - [Code 22](#code-22)
   - [Code 30](#code-30)
   - [Code 31](#code-31)
   - [Code 32](#code-32)
   - [Code 33](#code-33)
-  - [Code 34](#code-34)
   - [Code 90](#code-90)
   - [Code 91](#code-91)
 - [Versions](#versions)
+- [About Security](#about-security)
+  - [Knowed Issues](#knowed-issues)
 
 ## API key
 
 > [!IMPORTANT]\
-> API keys are distinct for each major API version and have specific permissions defined according to requirements. Each major API version has its own key prefix, enabling more precise and secure access management.
+> API keys can be distinct for each major API version and have specific permissions defined according to requirements. Each major API version has its own key prefix, enabling more precise and secure access management.
 
 ### Version 0 (v0)
 
@@ -62,21 +70,23 @@ This is the API used and created by SaurFort.
   - Example: apiv0_123e4567-e89b-12d3-a456-426614174000
 - Description: Version 0 API keys begin with the prefix apiv0_. Each key is followed by a unique v4 UUID, guaranteeing unique and secure access.
 
-#### Permissions
+### Permissions
 
 > [!IMPORTANT]\
 > There's a whole list of permissions for the API, so if a key doesn't have the permission, the API won't respond to the request.
 > You can refer to the [config file](../src/config.php) for all permissions and permissions code definitions.
 
 - __[Project](#project)__ :
-  | Function | Description | Method | Code |
+  | Function | Description | Code |
   | --- | --- | --- | --- |
-  | `REGISTER_USER` | Allows you to register new users on the network | __POST__ | 0 |
-  | `LOGIN_USER` | Allow you to login user | __POST__ | 1 |
-  | `CREATE_PROJECTS` | Create new projects | __POST__ | 2 |
-  | `UPDATE_PROJECTS` | Allows you to update information on existing projects. | __PUT__ | 3 |
-  | `DELETE_PROJECTS` | Delete existing projects. | __DELETE__ | 4 |
-  | `READ_PROJECTS`| Allows you to read project information. | __GET__ | 5 |
+  | `REGISTER_USER` | Allows you to register new users on the network | 0 |
+  | `LOGIN_USER` | Allow you to login user | 1 |
+  | `PERMISSION_SEND_MAIL` | Allow you to send mail with the email address of the API | 2 |
+  | `CREATE_PROJECTS` | Create new projects | 3 |
+    | `READ_PROJECTS`| Allows you to read project information. | 4 |
+  | `UPDATE_PROJECTS` | Allows you to update information on existing projects. | 5 |
+  | `DELETE_PROJECTS` | Delete existing projects. | 6 |
+  | `PERMISSION_OTHER_USERS_PROJECTS` | Allow you to access project of other users | 7 |
 
 ## Usage available
 
@@ -84,6 +94,16 @@ This is the API used and created by SaurFort.
 > For all examples, we're gonna use the API like in local development `http://localhost/api`.
 > [!WARNING]\
 > For any interaction with the API, you'll need to enter your API key!
+
+| Category | Action | Method |
+| --- | --- | --- |
+| __Account__ | `login.php` | __POST__ |
+| __Account__ | `register.php` | __POST__ |
+| __Mailer__ | `send.php` | __PUT__ |
+| __Project__ | `create.php` | __POST__ |
+| __Project__ | `read.php` | __GET__ |
+| __Project__ | `update.php` | __PUT__ |
+| __Project__ | `delete.php` | __DELETE__ |
 
 ### Account
 
@@ -124,7 +144,7 @@ This is the API used and created by SaurFort.
   }
   ```
 
-  - Depreciated login query body:
+- Depreciated login query body:
 
   ```json
   {
@@ -133,7 +153,7 @@ This is the API used and created by SaurFort.
   }
   ```
 
-  - Best login query body:
+- Best login query body:
 
   ```json
   {
@@ -199,7 +219,7 @@ This is the API used and created by SaurFort.
   }
   ```
 
-  - Register a user with rank:
+- Register a user with rank:
 
   ```json
   {
@@ -211,32 +231,73 @@ This is the API used and created by SaurFort.
   }
   ```
 
+### Mailer
+
+> [IMPORTANT]\
+> Mailer can be disabled by your API administrator so try to use a function of this section to test if it's enabled or not or demand to your API administrator.
+> [!NOTE]\
+> For all interaction with the Account API, you need to make your query to `http://localhost/api/mailer/`.
+
+#### Send
+
+> [!WARNING]\
+> Actually this function is experimental because there is no limitation in sending emails, and emails can be put into spams.
+> [!IMPORTANT]\
+> To send an email, you need to make your query at: `http://localhost/api/mailer/send.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> Send Mail API only takes __PUT__ query.
+> Send Mail API accept only raw json data.
+
+##### Send - Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| `email` | Recipient email address | string |
+| `subject` | Email subject | string |
+| `body` | Email body | string |
+
+> [!IMPORTANT]\
+> All fiels are required.
+> The email address used to send email is set by your API administrator.
+> [!NOTE]\
+> `body` fields support HTML so you can send email with HTML to make your email prettier
+
+##### Send - Example Requests
+
+```json
+{
+  "email": "mail@example.com",
+  "subject": "You're amazing!",
+  "body": "<h1>You're an amazing person!</h1><br/>Never forget this quote and tell it to yourself: \"I'm amazing!\""
+}
+```
+
 ### Project
 
 > [!NOTE]\
-> Actually you can only get projects of SaurFort with some arguments.
-> To access the project's API you need to request `project.php`.
+> For all interaction with the Account API, you need to make your query to `http://localhost/api/project/`.
 
 #### Create
 
 > [!IMPORTANT]\
-> For create projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=create`.
-> Don't forgot to make your query with the method __POST__.
-> [!WARNING]\
-> API only accept raw json for create query.
+> To create a project, you need to make your query at: `http://localhost/api/project/create.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> Create Project API only takes __POST__ query.
+> Create Project API accept only raw json data.
 
 ##### Create - Arguments
 
 | Name | Description | Type |
 | --- | --- | --- |
-| __`name`__ | Set the project's name | string _(VARCHAR(30)_) |
-| __`technologies`__ | Set technologies used for project | string _(TEXT)_ |
+| `name` | Set the project's name | string _(VARCHAR(30)_) |
+| `technologies` | Set technologies used for project | string _(TEXT)_ |
 | `creation` | Set the creation date of the project | string (DATE) |
-| __`description-en`__ | Set the English description of the project | string _(TEXT)_ |
+| `description-en` | Set the English description of the project | string _(TEXT)_ |
 | `description-fr` | Set the French description of the project | string _(TEXT)_ |
+| `owner` | Set the owner of project | string _(TEXT)_ |
 
 > [!IMPORTANT]\
-> Bold arguments are necessary for any create query.
+> `name`, `technologies`, `description-en` fiels are required to create a project in the API.
+> If you set a value for `owner` field other of your username, you may be have an error if you don't have the permissions.
+> [!NOTE]\
 > `creation` field is under the format: `Y-m-d`, if you don't set a value for it, the date of day will be taken.
 
 ##### Create - Example Requests
@@ -246,6 +307,7 @@ This is the API used and created by SaurFort.
   "name": "Project Alpha",
   "technologies": "PHP, MySQL, JavaScript",
   "description-en": "This is a project description in English.",
+  "owner": "SaurFort"
 }
 ```
 
@@ -259,82 +321,11 @@ This is the API used and created by SaurFort.
 }
 ```
 
-#### Update
-
-> [!IMPORTANT]\
-> For update projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=update`.
-> Don't forgot to make your query with the method __PUT__.
-> [!WARNING]\
-> API only accept raw json for update query.
-
-##### Update - Arguments
-
-| Name | Description | Type |
-| --- | --- | --- |
-| __`id`__ | Find the corresponding project and translations | int (INT) |
-| `name` | Set the project's name | string _(VARCHAR(30)_) |
-| `technologies` | Set technologies used for project | string _(TEXT)_ |
-| `creation` | Set the creation date of the project | string (DATE) |
-| `description-en` | Set the English description of the project | string _(TEXT)_ |
-| `description-fr` | Set the French description of the project | string _(TEXT)_ |
-
-> [!IMPORTANT]\
-> Bold argument is necessary for any update query.
-> You're not forced to put all data just the data you want to be updated.
-
-##### Update - Example Request
-
-```json
-{
-  "id": 1,
-  "description-fr": "Description du projet mise à jour en français."
-}
-```
-
-```json
-{
-  "id": 1,
-  "name": "Updated Project Alpha",
-  "technologies": "PHP, MySQL, JavaScript, Node.js",
-  "description-en": "Updated project description in English.",
-  "description-fr": "Description du projet mise à jour en français."
-}
-```
-
-#### Delete
-
-> [!IMPORTANT]\
-> For delete projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=delete`.
-> Don't forgot to make your query with the method __DELETE__.
-> [!WARNING]\
-> API only accept raw json for delete query.
-
-##### Delete - Arguments
-
-| Name | Description | Type |
-| --- | --- | --- |
-| __`id`__ | Find the corresponding project and translations | int (INT) |
-
-> [!WARNING]\
-> If the `id` is not defined the API can't delete anything
-> [!IMPORTANT]\
-> When you delete a project, everything is deleted, project and project's translations.
-
-##### Delete - Example Requests
-
-```json
-{
-  "id": 1
-}
-```
-
 #### Read
 
 > [!IMPORTANT]\
-> For reading projects, the basis of your query will be: `http://localhost/api/project.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&action=read`.
-> Don't forgot to make your query with the method __GET__.
-> [!NOTE]\
-> Reading a project doesn't require any arguments to be accessible.
+> To read a project, you need to make your query at: `http://localhost/api/project/read.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> Read Project API only takes __GET__ query.
 
 ##### Read - Arguments
 
@@ -345,11 +336,13 @@ This is the API used and created by SaurFort.
 | `filtertype` | Permit to define the filter you want to use. | string | _null_ |
 | `filter` | Permit to define the value of filter. | string | _null_ |
 | `limit` | Limit the number of projects sorted. | int | -1 (all project) |
+| `owner` | Gets projects of a specific owner | string | your username |
 
-> [!NOTE]\
+> [!IMPORTANT]\
 > For the moment, `lang` supports only English (en) and French (fr).
 > `sort` accepts only two values: `latest` or `oldest`.
 > `filtertype` accepts only two values: `id` or `name`.
+> If you tried to list projects of an owner other than you, you may be have an error if you don't have the right permissions.
 > [!WARNING]\
 > If `filter` is defined and `filtertype` is not provided, an error may occur.
 
@@ -458,6 +451,75 @@ This is the API used and created by SaurFort.
   ]
   ```
 
+#### Update
+
+> [!IMPORTANT]\
+> To update a project, you need to make your query at: `http://localhost/api/project/update.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> Update Project API only takes __PUT__ query.
+> Update Project API accept only raw json data.
+
+##### Update - Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| `id` | Find the corresponding project and translations | int (INT) |
+| `name` | Set the project's name | string _(VARCHAR(30)_) |
+| `technologies` | Set technologies used for project | string _(TEXT)_ |
+| `creation` | Set the creation date of the project | string (DATE) |
+| `description-en` | Set the English description of the project | string _(TEXT)_ |
+| `description-fr` | Set the French description of the project | string _(TEXT)_ |
+
+> [!IMPORTANT]\
+> `id` field is required to find the project.
+> If you try to update a project other than your's, you may be have an error if you don't have the permissions to do that.
+> [!NOTE]\
+> You're not forced to put all data just the data you want to be updated.
+
+##### Update - Example Request
+
+```json
+{
+  "id": 1,
+  "description-fr": "Description du projet mise à jour en français."
+}
+```
+
+```json
+{
+  "id": 1,
+  "name": "Updated Project Alpha",
+  "technologies": "PHP, MySQL, JavaScript, Node.js",
+  "description-en": "Updated project description in English.",
+  "description-fr": "Description du projet mise à jour en français."
+}
+```
+
+#### Delete
+
+> [!IMPORTANT]\
+> To delete a project, you need to make your query at: `http://localhost/api/project/delete.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+> Update Project API only takes __DELETE__ query.
+> Update Project API accept only raw json data.
+
+##### Delete - Arguments
+
+| Name | Description | Type |
+| --- | --- | --- |
+| `id` | Find the corresponding project and translations | int (INT) |
+
+> [!IMPORTANT]\
+> `id` field is required to delete the project.
+> If you try to delete a project other than your's, you may be have an error if you don't have the permissions to do that.
+> When you delete a project, everything is deleted, project and project's translations.
+
+##### Delete - Example Requests
+
+```json
+{
+  "id": 1
+}
+```
+
 ## API Codes
 
 > [!IMPORTANT]\
@@ -476,11 +538,13 @@ This is the API used and created by SaurFort.
 | 16 | Account already registered | _none_ |
 | 17 | Invalid argument for login | A,B |
 | 18 | Login account failed | _none_ |
-| 30 | Invalid action for project | _none_ |
-| 31 | Invalid argument for create project action | _none_ |
-| 32 | Invalid argument for update project action | _none_ |
-| 33 | Invalid argument for delete project action | _none_ |
-| 34 | Invalid argument for read project action | A,B,C,D,E |
+| 20 | Mailing functionnality is disabled | _none_ |
+| 21 | Invalid argument for send email API | A,B,C |
+| 22 | Error when sending an email | _none_ |
+| 30 | Invalid argument for create project API | A,B,C,D,E,F |
+| 31 | Invalid argument for update project API | _none_ |
+| 32 | Invalid argument for delete project API | _none_ |
+| 33 | Invalid argument for read project API | A,B,C,D,E |
 | 90 | SQL query error | _none_ |
 | 91 | SQL query result is empty | _none_ |
 | 92 | Error when preparing SQL query | _none_ |
@@ -491,7 +555,7 @@ This code indicates that the query has been completed successfully by the API.
 
 ### Code 02
 
-This codes indicates an invalid method when calling the API. To be sure you can [refer to permissions](#permissions) where all methods are refered, else you can check the corresponding section.
+This codes indicates an invalid method when calling the API. To be sure you can [refer to method table](#usage-available) where all methods are refered, else you can check the corresponding section.
 
 ### Code 10
 
@@ -544,31 +608,50 @@ This code indicates an invalid argument for login.
 
 This code is a generic code to say that the credentials are not valid but for security the API will never return what in credentials is not valid.
 
+### Code 20
+
+This code indicates that the mailing API system is disabled. If you think that's an error, demand that to your API's administrator.
+
+### Code 21
+
+This code indicates an invalid argument for sending an email.
+
+- __21A__: Argument email is not provided.
+- __22B__: Argument subject is not provided.
+- __22C__: Argument body is not provided.
+
+### Code 22
+
+This code indicates that the email sending API failed when trying to send the email. Try again or contact your API's administrator.
+
 ### Code 30
 
-This code indicates that the action you have attempted is not a valid action for the project.
+This code indicates an invalid argument for the create project's API.
+
+- __30A__: Argument name is not provided.
+- __30B__: Argument technologies is not provided.
+- __30C__: Argument description-en is not provided.
+- __30D__: Argument owner is not provided.
+- __30E__: You try to create a project other than you but you don't have permission to do that.
+- __30F__: Project name already exists for this owner.
 
 ### Code 31
 
-This code indicates an invalid argument for the create project's action.
+This code indicates an invalid argument for the update project's API or in the query you made, there is no data to update.
 
 ### Code 32
 
-This code indicates an invalid argument for the update project's action.
+This code indicates that the field `id` was not provided.
 
 ### Code 33
 
-This code indicates an invalid argument for the delete project's action.
+This code indicates an invalid argument for the read project's API.
 
-### Code 34
-
-This code indicates an invalid argument for the read project's action.
-
-- __34A__: Invalid argument for __`sort`__ (for example, a value other than `latest` or `oldest` is supplied).
-- __34B__: Invalid argument for __`lang`__ (for example, a language other than `en` or `fr` is supplied).
-- __34C__: Invalid filter type for __`filtertype`__ (for example, a value other than `id` or `name` is supplied).
-- __34D__: The __`filter`__ is empty when `filtertype` is defined (for example, the `filter` parameter is absent or is an empty string when `filtertype` is specified).
-- __34E__: __`filtertype`__ is set to `id` but the `filter` is not a valid ID (for example, `filter` is a non-numeric string whereas `filtertype` is `id`).
+- __33A__: Invalid argument for __`sort`__ (for example, a value other than `latest` or `oldest` is supplied).
+- __33B__: Invalid argument for __`lang`__ (for example, a language other than `en` or `fr` is supplied).
+- __33C__: Invalid filter type for __`filtertype`__ (for example, a value other than `id` or `name` is supplied).
+- __33D__: The __`filter`__ is empty when `filtertype` is defined (for example, the `filter` parameter is absent or is an empty string when `filtertype` is specified).
+- __33E__: __`filtertype`__ is set to `id` but the `filter` is not a valid ID (for example, `filter` is a non-numeric string whereas `filtertype` is `id`).
 
 ### Code 90
 
@@ -583,7 +666,26 @@ This code indicates that the SQL query executed successfully but returned no row
 > [!NOTE]\
 > List of all versions and whether they are still active or not.
 > Early development versions are listed but are not hosted on a public server.
+> `early development` version don't have listed functionality.
 
 | Version | Version Type | Status |
 | --- | --- | --- |
 | v0.6.0 | `early development` | __private__ |
+| v0.7.0 | `early development` | __private__ |
+| v0.8.0 | `early development` | __private__ |
+
+## About Security
+
+> [!IMPORTANT]\
+> Security is a critical aspect of any API. This section covers the security measures implemented in this API and best practices for ensuring secure usage.
+> [!NOTE]\
+> I have planned to make a Capture The Flag (CTF) on a test environment but the API is actually in too early development so I'm just getting the necessary time to create all the basis functionality. If you want to participate at this CTF or your just want to break the API, you can contact me at: `contact@saurfort.fr`.
+> All the result of security test maded will be describe below.
+
+### Knowed Issues
+
+Actually the API is weak to sometings :
+
+- There is no rate limit on the API.
+- There is no delay between requests.
+- There is no limit on sending emails.
