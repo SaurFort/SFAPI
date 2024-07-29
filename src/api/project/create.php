@@ -42,6 +42,10 @@
             makeLog("API-CreateProject", $key, "Project's owner is not provided", 1);
             echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "D", "message" => "Project's owner is not provided"]);
             exit;
+        } elseif(!verifyKeyPerms($key, $perms, PERMISSION_OTHER_USERS_PROJECTS) && !verifyKeyOwner($key)) {
+            makeLog("API-CreateProject", $key, "Missing permission to create project for other users", 1);
+            echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "E", "message" => "You don't have permissions to create project for other users"]);
+            exit;
         }
 
         $query = "SELECT name, owner FROM projects WHERE name = ? AND owner = ?";
@@ -59,7 +63,7 @@
 
         if($result->num_rows > 0) {
             makeLog("API-CreateProject", $key, "Project " . $data['name'] . " by " . $data['owner'] . " already exist", 1);
-            echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "E", "message" => "Project name already exist for this owner"]);
+            echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "F", "message" => "Project name already exist for this owner"]);
             exit;
         }
         $stmt->close();

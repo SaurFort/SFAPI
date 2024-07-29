@@ -27,7 +27,7 @@
         $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
         $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : -1;
 
-        if(isset($_GET['owner']) && verifyKeyPerms($key, $perms, PERMISSION_READ_OTHER_PROJECTS)) {
+        if(isset($_GET['owner']) && verifyKeyPerms($key, $perms, PERMISSION_OTHER_USERS_PROJECTS)) {
             $owner = $_GET['owner'];
             makeLog("API-ReadProject", $key, verifyKeyOwner($key) . " just tried to access at a projet of " . $owner, 2);
         } else {
