@@ -59,7 +59,7 @@
         
         // Checks whether the password has already been hashed
         if (isAlreadyHashed($data['password'], $hashPrefixes)) {
-            makeLog("API-Register", $key, "Password alreay hashed but hash is not supported", 2);
+            makeLog("API-Register", $key, "Password already hashed but hash is not supported", 2);
             echo json_encode(["code" => ACCOUNT_REGISTER_PASSWORD_ERROR . "A", "message" => "Password is already hashed and the algorithm used is not supported by the API."]);
             exit;
         }

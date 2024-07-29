@@ -21,7 +21,7 @@
                 makeLog("API-KeyVerification", $key, "Valid key", 1);
                 return $row['perms'];
             } else {
-                makeLog("API-KeyVerification", $key, "The key is not valid.", 2);
+                makeLog("API-KeyVerification", $key, "The key is not valid.", 1);
                 echo json_encode(["code" => API_KEY_WRONG, "message" => "Your API key is not valid"]);
                 exit;
             }
@@ -37,7 +37,7 @@
         // var_dump($keyPerms);
 
         if ($keyPerms === "*") {
-            makeLog("API-KeyVerification", $key, "A super key was used", 4);
+            makeLog("API-KeyVerification", $key, "A super key was used", 3);
             return true;
         } else {
             // Remove any trailing spaces and semicolons

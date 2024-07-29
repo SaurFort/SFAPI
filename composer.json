@@ -1,0 +1,20 @@
+{
+    "name": "saurfort/sfapi",
+    "description": "An API made to make universal some data universal between application and increase security",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "license": "Apache-2.0 license",
+    "autoload": {
+        "psr-4": {
+            "Saurfort\\Sfapi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SaurFort",
+            "email": "97303132+SaurFort@users.noreply.github.com"
+        }
+    ]
+}
