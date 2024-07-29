@@ -6,6 +6,7 @@
         $timestamp = date("H:i:s"); // Get the current time for the log entry
         //$userIP = getUserIP(); // No longer used (Get the IP address of the user)
         $fileName = LOGS_FOLDER . $date . ".log"; // Create the log file name using the current date
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         if (!file_exists(LOGS_FOLDER)) {
             mkdir(LOGS_FOLDER, 0777, true);
@@ -29,7 +30,7 @@
                 break;
         }
 
-        $logMessage = "$alertName: [$timestamp] [$apiRequested]: " . $message . " - Key: " . $apiKey . "\n"; // Create the log message with a newline
+        $logMessage = "$alertName: [$timestamp] [$apiRequested] $requestMethod: $message - Key: $apiKey\n"; // Create the log message with a newline
 
         // Debugging output
         // echo($fileName);

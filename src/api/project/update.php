@@ -156,6 +156,7 @@
             exit;
         }
     } else {
+        makeLog($loggerName, $key, "Wrong method request", 1);
         echo json_encode(["code" => INVALID_API_METHOD, "message" => "Update project API can only take PUT method"]);
         exit;
     }

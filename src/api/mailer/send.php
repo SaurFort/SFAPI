@@ -56,33 +56,34 @@
 
         $mail = new PHPMailer(true);
 
-    try {
-        $mail->isSMTP();
-        $mail->Host       = SMTP_SERVER;
-        $mail->SMTPAuth   = SMTP_AUTH;
-        $mail->Username   = EMAIL_ADDRESS;
-        $mail->Password   = EMAIL_PASSWORD;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = SMTP_PORT;
-        $mail->CharSet    = "UTF-8";
+        try {
+            $mail->isSMTP();
+            $mail->Host       = SMTP_SERVER;
+            $mail->SMTPAuth   = SMTP_AUTH;
+            $mail->Username   = EMAIL_ADDRESS;
+            $mail->Password   = EMAIL_PASSWORD;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = SMTP_PORT;
+            $mail->CharSet    = "UTF-8";
 
-        $mail->setFrom(EMAIL_ADDRESS, EMAIL_NAME);
-        $mail->addAddress($data['email']);
+            $mail->setFrom(EMAIL_ADDRESS, EMAIL_NAME);
+            $mail->addAddress($data['email']);
 
-        $mail->isHTML(true);
-        $mail->Subject = $data['subject'];
-        $mail->Body    = $data['body'];
+            $mail->isHTML(true);
+            $mail->Subject = $data['subject'];
+            $mail->Body    = $data['body'];
 
-        $mail->send();
-        makeLog($loggerName, $key, "Email sent to " . $data['email'] . " with the subject " . $data['subject'] . " and the body " . $data['body'], 3);
-        echo json_encode(["code" => QUERY_WORKED_SUCCESSFULLY, "message" => "Email sent successfully"]);
-        exit;
-    } catch (Exception $e) {
-        makeLog($loggerName, $key, "Email could not be sent. Mailer Error: " . $mail->ErrorInfo, 3);
-        echo json_encode(["code" => MAILER_SEND_EMAIL_FAILED, "message" => "Email could not be sent. Mailer Error: " . $mail->ErrorInfo]);
-        exit;
-    }
+            $mail->send();
+            makeLog($loggerName, $key, "Email sent to " . $data['email'] . " with the subject " . $data['subject'] . " and the body " . $data['body'], 3);
+            echo json_encode(["code" => QUERY_WORKED_SUCCESSFULLY, "message" => "Email sent successfully"]);
+            exit;
+        } catch (Exception $e) {
+            makeLog($loggerName, $key, "Email could not be sent. Mailer Error: " . $mail->ErrorInfo, 3);
+            echo json_encode(["code" => MAILER_SEND_EMAIL_FAILED, "message" => "Email could not be sent. Mailer Error: " . $mail->ErrorInfo]);
+            exit;
+        }
     } else {
+        makeLog($loggerName, $key, "Wrong method request", 1);
         echo json_encode(["code" => INVALID_API_METHOD, "message" => "Send mail can only take PUT method"]);
         exit;
     }

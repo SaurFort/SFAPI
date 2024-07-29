@@ -136,6 +136,7 @@
         $stmt->close();
         exit;
     } else {
+        makeLog($loggerName, $key, "Wrong method request", 1);
         echo json_encode(["code" => INVALID_API_METHOD, "message" => "Register can only take POST method"]);
         exit;
     }
