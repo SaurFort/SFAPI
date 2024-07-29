@@ -100,7 +100,7 @@
                 exit;
             }
         } else {
-            makeLog("API-Login", $key, "Username: $username, or Email: $email, unvalid", 2);
+            makeLog("API-Login", $key, "Username: $username, or Email: $email are unvalid", 2);
 
             // Debugging output
             // echo "A";
