@@ -1,12 +1,13 @@
 <?php
     function verifyAPIKey(string $key) {
         if (empty($key)) {
+            makeLog("API-KeyVerification", "", "An user tried to access the API without key", 2);
             echo json_encode(["code" => EMPTY_API_KEY, "message" => "You haven't set your API key."]);
             exit; // Add an exit here to ensure execution stops.
         } elseif (str_starts_with($key, KEY_PREFIX)) { // Check version
             include('../database.php');
 
-            $query = "SELECT api.api_key, api.perms FROM api_keys api WHERE api.api_key = ?";
+            $query = "SELECT api.api_key, api.perms, api.owner FROM api_keys api WHERE api.api_key = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("s", $key);
             $stmt->execute();
@@ -15,18 +16,21 @@
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
 
+                $perms = $row['perms'];
+                $owner = $row['owner'];
+
                 // Debug: Display retrieved permissions
                 // var_dump($row['perms']);
 
-                makeLog("API-KeyVerification", $key, "Valid key", 1);
-                return $row['perms'];
+                makeLog("API-KeyVerification", $key, "$owner just used a key", 1);
+                return $perms;
             } else {
-                makeLog("API-KeyVerification", $key, "The key is not valid.", 1);
+                makeLog("API-KeyVerification", $key, "API key not valid", 1);
                 echo json_encode(["code" => API_KEY_WRONG, "message" => "Your API key is not valid"]);
                 exit;
             }
         } else {
-            makeLog("API-KeyVerification", $key, "The key is not made for the version " . VERSION, 2);
+            makeLog("API-KeyVerification", $key, "The API key is not made for the version " . VERSION, 2);
             echo json_encode(["code" => API_KEY_VERSION_ERROR, "message" => "Your API key is not made for the version " . VERSION]);
             exit;
         }
@@ -58,6 +62,28 @@
                 echo json_encode(["code" => API_KEY_PERMISSION_ERROR, "message" => "You don't have the permission number " . $requiredPermsCode]);
                 exit;
             }
+        }
+    }
+
+    function verifyKeyOwner(string $key) {
+        include('../database.php');
+
+        $query = "SELECT api.owner FROM api_keys api WHERE api.api_key = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $key);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            $owner = $row['owner'];
+
+            makeLog("API-KeyVerification", $key, "$owner just been verified", 1);
+            return $owner;
+        } else {
+            makeLog("API-KeyVerification", $key, "SQL Error: " . $conn->error, 1);
+            return false;
         }
     }
 ?>
