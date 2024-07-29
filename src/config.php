@@ -26,8 +26,8 @@
 
     // API Permissions
     define("PERMISSION_REGISTER_USER", 0);
-    define("PERMISSION_SEND_MAIL", 1);
-    define("PERMISSION_LOGIN_USER", 2);
+    define("PERMISSION_LOGIN_USER", 1);
+    define("PERMISSION_SEND_MAIL", 2);
     define("PERMISSION_CREATE_PROJECTS", 3);
     define("PERMISSION_READ_PROJECTS", 4);
     define("PERMISSION_UPDATE_PROJECTS", 5);
