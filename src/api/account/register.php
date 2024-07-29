@@ -68,7 +68,7 @@
         if (str_starts_with($password, "\$argon2id\$v=19\$m=65536,t=4,p=1")) {
             $hashedPassword = $password;
         } elseif (str_starts_with($password, "\$argon2id")) {
-            echo json_encode(["code" => ACCOUNT_REGISTER_PASSWORD_ERROR . "D", "message" => "Password hash not used the correct parameter."]);
+            echo json_encode(["code" => ACCOUNT_REGISTER_PASSWORD_ERROR . "B", "message" => "Password hash not used the correct parameter."]);
             exit;
         } else {
             if ($password !== $passwordConfirmation) {
