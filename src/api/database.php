@@ -1,10 +1,5 @@
 <?php
-    $servername = "localhost:3306";
-    $username = "root";
-    $password = "";
-    $dbname = "saurfort";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
