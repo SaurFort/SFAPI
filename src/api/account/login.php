@@ -24,12 +24,12 @@
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (empty($data['username']) && empty($data['email'])) {
-            makeLog("API-Login", $key, "No username or email provided", 2);
+            makeLog("API-Login", $key, "No username or email provided", 1);
             echo json_encode(["code" => ACCOUNT_LOGIN_ARGUMENT_ERROR . "A", "message" => "You need at least one argument to login the user."]);
             exit;
         }
         if (empty($data['password'])) {
-            makeLog("API-Login", $key, "No password provided for username: " . $data['username'] . " and/or email: " . $data['email'], 2);
+            makeLog("API-Login", $key, "No password provided for username: " . $data['username'] . " and/or email: " . $data['email'], 1);
             echo json_encode(["code" => ACCOUNT_LOGIN_ARGUMENT_ERROR . "B", "message" => "The password cannot be empty."]);
             exit;
         }
@@ -108,7 +108,7 @@
             exit;
         }
     } else {
-        echo json_encode(["code" => INVALID_API_METHOD, "message" => "Register can only take POST method"]);
+        echo json_encode(["code" => INVALID_API_METHOD, "message" => "Login can only take POST method"]);
         exit;
     }
 ?>
