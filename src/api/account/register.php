@@ -14,7 +14,7 @@
         exit; // The verifyAPIKey function has already returned an appropriate response and terminated the execution
     }
 
-    if (!verifyKeyPerms($perms, PERMISSION_REGISTER_USER)) {
+    if (!verifyKeyPerms($key, $perms, PERMISSION_REGISTER_USER)) {
         exit;
     }
 

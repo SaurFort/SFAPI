@@ -5,6 +5,9 @@
     define("CREATORS", "SaurFort");
     define("AVAILABLE LANGUAGE", "en;fr");
 
+    // API settings
+    define("LOGS_FOLDER", "logs/"); // Path to logs folder
+
     // API Key
     define("KEY_PREFIX", "apiv0_");
 

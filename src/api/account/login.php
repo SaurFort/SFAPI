@@ -5,6 +5,7 @@
     require('../../config.php');
     include('../database.php');
     include('../checker.php');
+    include('../logger.php');
 
     $key = isset($_GET['key']) ? $_GET['key'] : "";
 
@@ -15,7 +16,7 @@
     }
 
     // Check if the API key has permission to login user
-    if (!verifyKeyPerms($perms, PERMISSION_LOGIN_USER)) {
+    if (!verifyKeyPerms($key, $perms, PERMISSION_LOGIN_USER)) {
         exit;
     }
 
@@ -23,10 +24,12 @@
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (empty($data['username']) && empty($data['email'])) {
+            makeLog("API-Login", $key, "No username or email provided", 2);
             echo json_encode(["code" => ACCOUNT_LOGIN_ARGUMENT_ERROR . "A", "message" => "You need at least one argument to login the user."]);
             exit;
         }
         if (empty($data['password'])) {
+            makeLog("API-Login", $key, "No password provided for username: " . $data['username'] . " and/or email: " . $data['email'], 2);
             echo json_encode(["code" => ACCOUNT_LOGIN_ARGUMENT_ERROR . "B", "message" => "The password cannot be empty."]);
             exit;
         }
@@ -54,6 +57,7 @@
 
         $stmt = $conn->prepare($query);
         if ($stmt === false) {
+            makeLog("API-Login", $key, "SQL Prepare Error for the $username | $email, error: " . $conn->error, 2);
             echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
             exit;
         }
@@ -68,6 +72,7 @@
         }
 
         if (!$stmt->execute()) {
+            makeLog("API-Login", $key, "SQL Execute Error for $username | $email, error: " . $stmt->error, 2);
             echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Execute Error: " . $stmt->error]);
             exit;
         }
@@ -79,6 +84,7 @@
         }
 
         if ($result->num_rows > 0) {
+            
             $row = $result->fetch_assoc();
 
             // Verify the password
@@ -91,6 +97,8 @@
                 exit;
             }
         } else {
+            makeLog("API-Login", $key, "", 2);
+
             // Debugging output
             // echo "A";
             echo json_encode(["code" => ACCOUNT_LOGIN_FAILED, "message" => "Invalid credentials."]);
