@@ -2,9 +2,10 @@
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
 
-    require('../config.php');
+    require('../../config.php');
     include('../database.php');
-    include('checker.php');
+    include('../checker.php');
+    include('../logger.php');
 
     $key = isset($_GET['key']) ? $_GET['key'] : "";
     $action = isset($_GET['action']) ? $_GET['action'] : "";
@@ -39,7 +40,7 @@
             exit;
     }
 
-    if (!verifyKeyPerms($perms, $requiredPerm)) {
+    if (!verifyKeyPerms($key, $perms, $requiredPerm)) {
         exit; // The verifyKeyPerms function has already returned an appropriate response and terminated the execution
     }
 

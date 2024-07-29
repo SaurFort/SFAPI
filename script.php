@@ -1,4 +1,6 @@
 <?php
+    /** This file is made to test some functionnality before the implementation in the complete API */
+    
     function generateUuidV4WithPrefix($prefix) {
         // Génère 16 octets aléatoires
         $bytes = random_bytes(16);
