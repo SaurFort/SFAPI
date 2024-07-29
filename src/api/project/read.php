@@ -8,7 +8,7 @@
     include('../logger.php');
 
     $key = isset($_GET['key']) ? $_GET['key'] : "";
-    $action = isset($_GET['action']) ? $_GET['action'] : "";
+    $loggerName = "API-ReadProject";
 
     // Check if the key is valid and the action is defined
     $perms = verifyAPIKey($key);
@@ -29,37 +29,37 @@
 
         if(isset($_GET['owner']) && verifyKeyPerms($key, $perms, PERMISSION_OTHER_USERS_PROJECTS)) {
             $owner = $_GET['owner'];
-            makeLog("API-ReadProject", $key, verifyKeyOwner($key) . " just tried to access at a projet of " . $owner, 2);
+            makeLog($loggerName, $key, verifyKeyOwner($key) . " just tried to access at a projet of " . $owner, 2);
         } else {
             $owner = verifyKeyOwner($key);
         }
 
         if(!in_array($lang, ['en', 'fr'])) {
-            makeLog("API-ReadProject", $key, "Invalid language parameter: " . $lang, 1);
+            makeLog($loggerName, $key, "Invalid language parameter: " . $lang, 1);
             echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "A", "message" => "Invalid language parameter."]);
             exit;
         }
 
         if(!in_array($sort, ['latest', 'oldest'])) {
-            makeLog("API-ReadProject", $key, "Invalid sort parameter: " . $sort, 1);
+            makeLog($loggerName, $key, "Invalid sort parameter: " . $sort, 1);
             echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "B", "message" => "Invalid sort parameter."]);
             exit;
         }
 
         if(!in_array($filterType, ['id', 'name']) && !empty($filterType)) {
-            makeLog("API-ReadProject", $key, "Invalid filter type parameter: " . $filterType, 1);
+            makeLog($loggerName, $key, "Invalid filter type parameter: " . $filterType, 1);
             echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "C", "message" => "Invalid filter type parameter."]);
             exit;
         } else {
             if(empty($filter) && !empty($filterType)) {
-                makeLog("API-ReadProject", $key, "Filter is empty but filter type is set", 1);
+                makeLog($loggerName, $key, "Filter is empty but filter type is set", 1);
                 echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "D", "message" => "Filter is empty but filtertype is defined."]);
                 exit;
             }
 
             if($filterType === "id" && !empty($filterType)) {
                 if (!filter_var($filter, FILTER_VALIDATE_INT)) {
-                    makeLog("API-ReadProject", $key, "Filter type is defined on id but filter is not a valid integer id", 1);
+                    makeLog($loggerName, $key, "Filter type is defined on id but filter is not a valid integer id", 1);
                     echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "E", "message" => "Filtertype is defined on id but filter is not a valid integer id."]);
                     exit;
                 }

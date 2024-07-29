@@ -8,7 +8,7 @@
     include('../logger.php');
 
     $key = isset($_GET['key']) ? $_GET['key'] : "";
-    $action = isset($_GET['action']) ? $_GET['action'] : "";
+    $loggerName = "API-CreateProject";
 
     // Check if the key is valid and the action is defined
     $perms = verifyAPIKey($key);
@@ -24,26 +24,26 @@
         $data = json_decode(file_get_contents("php://input"), true);
 
         if(empty($data['name'])) {
-            makeLog("API-CreateProject", $key, "Project's name is not provided", 1);
+            makeLog($loggerName, $key, "Project's name is not provided", 1);
             echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "A", "message" => "Project's name is not provided"]);
             exit;
         }
         if(empty($data['technologies'])) {
-            makeLog("API-CreateProject", $key, "Project's technologies is not provided", 1);
+            makeLog($loggerName, $key, "Project's technologies is not provided", 1);
             echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "B", "message" => "Project's technologies is not provided"]);
             exit;
         }
         if(empty($data['description-en'])) {
-            makeLog("API-CreateProject", $key, "Project's english description is not provided", 1);
+            makeLog($loggerName, $key, "Project's english description is not provided", 1);
             echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "C", "message" => "Project's english description is not provided"]);
             exit;
         }
         if(empty($data['owner'])) {
-            makeLog("API-CreateProject", $key, "Project's owner is not provided", 1);
+            makeLog($loggerName, $key, "Project's owner is not provided", 1);
             echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "D", "message" => "Project's owner is not provided"]);
             exit;
-        } elseif(!verifyKeyPerms($key, $perms, PERMISSION_OTHER_USERS_PROJECTS) && !verifyKeyOwner($key)) {
-            makeLog("API-CreateProject", $key, "Missing permission to create project for other users", 1);
+        } elseif(!verifyKeyPerms($key, $perms, PERMISSION_OTHER_USERS_PROJECTS) && verifyKeyOwner($key) !== $data['owner']) {
+            makeLog($loggerName, $key, "Missing permission to create project for other users", 1);
             echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "E", "message" => "You don't have permissions to create project for other users"]);
             exit;
         }
@@ -52,7 +52,7 @@
         $stmt = $conn->prepare($query);
 
         if($stmt === false) {
-            makeLog("API-CreateProject", $key, "SQL Prepare Error: " . $conn->error, 2);
+            makeLog($loggerName, $key, "SQL Prepare Error: " . $conn->error, 2);
             echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
             exit;
         }
@@ -62,7 +62,7 @@
         $result = $stmt->get_result();
 
         if($result->num_rows > 0) {
-            makeLog("API-CreateProject", $key, "Project " . $data['name'] . " by " . $data['owner'] . " already exist", 1);
+            makeLog($loggerName, $key, "Project " . $data['name'] . " by " . $data['owner'] . " already exist", 1);
             echo json_encode(["code" => PROJECT_CREATE_ARGUMENT_ERROR . "F", "message" => "Project name already exist for this owner"]);
             exit;
         }
@@ -72,7 +72,7 @@
         $stmt = $conn->prepare($query);
 
         if($stmt === false) {
-            makeLog("API-CreateProject", $key, "SQL Prepare Error: " . $conn->error, 2);
+            makeLog($loggerName, $key, "SQL Prepare Error: " . $conn->error, 2);
             echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
             exit;
         }
@@ -91,7 +91,7 @@
             $stmt = $conn->prepare($query);
 
             if($stmt === false) {
-                makeLog("API-CreateProject", $key, "SQL Prepare Error: " . $conn->error, 2);
+                makeLog($loggerName, $key, "SQL Prepare Error: " . $conn->error, 2);
                 echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
                 exit;
             }
@@ -109,7 +109,7 @@
                 $stmt = $conn->prepare($query);
 
                 if($stmt === false) {
-                    makeLog("API-CreateProject", $key, "SQL Prepare Error: " . $conn->error, 2);
+                    makeLog($loggerName, $key, "SQL Prepare Error: " . $conn->error, 2);
                     echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
                     exit;
                 }
@@ -136,16 +136,16 @@
                     $data['description-fr'] = "none";
                 }
 
-                makeLog("API-CreateProject", $key, "Project " . $data['name'] . " by " . $data['owner'] . " was added with his description, en: " . $data['description-en'] . " and fr: " . $data['description-fr'], 3);
+                makeLog($loggerName, $key, "Project " . $data['name'] . " by " . $data['owner'] . " was added with his description, en: " . $data['description-en'] . " and fr: " . $data['description-fr'], 3);
                 echo json_encode(["code" => QUERY_WORKED_SUCCESSFULLY, "message" => "The project was successfully added to the db."]);
                 exit;
             } else {
-                makeLog("API-CreateProject", $key, "SQL Empty Row Error: " . $conn->error, 2);
+                makeLog($loggerName, $key, "SQL Empty Row Error: " . $conn->error, 2);
                 echo json_encode(["code" => SQL_QUERY_EMPTY_ROW_ERROR, "message" => "No projects found."]);
                 exit;
             }
         } else {
-            makeLog("API-CreateProject", $key, "SQL Error: " . $conn->error, 2);
+            makeLog($loggerName, $key, "SQL Error: " . $conn->error, 2);
             echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
             exit;
         }
