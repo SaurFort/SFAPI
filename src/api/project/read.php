@@ -29,31 +29,37 @@
 
         if(isset($_GET['owner']) && verifyKeyPerms($key, $perms, PERMISSION_READ_OTHER_PROJECTS)) {
             $owner = $_GET['owner'];
+            makeLog("API-ReadProject", $key, verifyKeyOwner($key) . " just tried to access at a projet of " . $owner, 2);
         } else {
             $owner = verifyKeyOwner($key);
         }
 
         if(!in_array($lang, ['en', 'fr'])) {
+            makeLog("API-ReadProject", $key, "Invalid language parameter: " . $lang, 1);
             echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "A", "message" => "Invalid language parameter."]);
             exit;
         }
 
         if(!in_array($sort, ['latest', 'oldest'])) {
+            makeLog("API-ReadProject", $key, "Invalid sort parameter: " . $sort, 1);
             echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "B", "message" => "Invalid sort parameter."]);
             exit;
         }
 
         if(!in_array($filterType, ['id', 'name']) && !empty($filterType)) {
+            makeLog("API-ReadProject", $key, "Invalid filter type parameter: " . $filterType, 1);
             echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "C", "message" => "Invalid filter type parameter."]);
             exit;
         } else {
             if(empty($filter) && !empty($filterType)) {
+                makeLog("API-ReadProject", $key, "Filter is empty but filter type is set", 1);
                 echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "D", "message" => "Filter is empty but filtertype is defined."]);
                 exit;
             }
 
             if($filterType === "id" && !empty($filterType)) {
                 if (!filter_var($filter, FILTER_VALIDATE_INT)) {
+                    makeLog("API-ReadProject", $key, "Filter type is defined on id but filter is not a valid integer id", 1);
                     echo json_encode(["code" => PROJECT_READ_ARGUMENT_ERROR . "E", "message" => "Filtertype is defined on id but filter is not a valid integer id."]);
                     exit;
                 }
@@ -86,7 +92,8 @@
         $stmt = $conn->prepare($query);
 
         if($stmt === false) {
-            echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
+            makeLog("API-CreateProject", $key, "SQL Prepare Error: " . $conn->error, 2);
+            echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
             exit;
         }
 
@@ -114,6 +121,7 @@
         $result = $stmt->get_result();
 
         if($result === false) {
+            makeLog("API-CreateProject", $key, "SQL Error: " . $conn->error, 2);
             echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
             exit;
         }
@@ -126,8 +134,14 @@
         }
 
         if(empty($projects)) {
+            makeLog("API-CreateProject", $key, "SQL Empty Row, no projects found for user $owner", 2);
             echo json_encode(["code" => SQL_QUERY_EMPTY_ROW_ERROR, "message" => "No projects found."]);
         } else {
+            $projectsString = "";
+            foreach ($projects as $project) {
+                $projectsString .= "Name: " . $project['name'] . " ;";
+            }
+            makeLog("API-CreateProject", $key, "Getted projects: $projectsString", 2);
             echo json_encode($projects);
         }
     } else {
