@@ -1,7 +1,5 @@
 <?php
     function verifyAPIKey(string $key) {
-        include("../logger.php");
-
         if (empty($key)) {
             echo json_encode(["code" => EMPTY_API_KEY, "message" => "You haven't set your API key."]);
             exit; // Add an exit here to ensure execution stops.

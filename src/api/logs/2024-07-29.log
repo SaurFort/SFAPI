@@ -1,0 +1,14 @@
+2: [08:23:01] [API-KeyVerification] | [::1]: The key is not valid. - Key: apiv0_d92f79f9-0dbe-400d-a85c-59c732aa06d2
+1: [08:23:05] [API-KeyVerification] | [::1]: Valid key - Key: apiv0_ce1b3041-3f5c-4351-8810-598fcd8a6b97
+2: [08:23:05] [API-KeyVerification] | [::1]: Missing permission number 1 - Key: apiv0_ce1b3041-3f5c-4351-8810-598fcd8a6b97
+1: [08:23:25] [API-KeyVerification] | [::1]: Valid key - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+4: [08:23:25] [API-KeyVerification] | [::1]: A super key was used - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+1: [08:24:44] [API-KeyVerification] | [::1]: Valid key - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+4: [08:24:44] [API-KeyVerification] | [::1]: A super key was used - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+3: [08:24:45] [API-Login] | [::1]: Correct credentials for SaurFort |  - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+1: [08:25:00] [API-KeyVerification] | [::1]: Valid key - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+4: [08:25:00] [API-KeyVerification] | [::1]: A super key was used - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+2: [08:25:00] [API-Login] | [::1]: No password provided for username: SaurFort and/or email:  - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+1: [08:25:04] [API-KeyVerification] | [::1]: Valid key - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+4: [08:25:04] [API-KeyVerification] | [::1]: A super key was used - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33
+2: [08:25:04] [API-Login] | [::1]: Unvalid password for SaurFort |  - Key: apiv0_1bbaa309-6606-4e98-93db-60fbb8d0ab33

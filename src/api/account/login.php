@@ -79,6 +79,7 @@
 
         $result = $stmt->get_result();
         if ($result === false) {
+            makeLog("API-Login", $key, "SQL Get Result Error for $username | $email, error: " . $stmt->error, 2);
             echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Get Result Error: " . $stmt->error]);
             exit;
         }
@@ -89,15 +90,17 @@
 
             // Verify the password
             if (password_verify($data['password'], $row['password'])) {
+                makeLog("API-Login", $key, "Correct credentials for $username | $email", 3);
                 echo json_encode(["code" => QUERY_WORKED_SUCCESSFULLY, "message" => "Correct credentials."]);
             } else {
+                makeLog("API-Login", $key, "Unvalid password for $username | $email", 2);
                 // Debugging output
                 // echo "B";
                 echo json_encode(["code" => ACCOUNT_LOGIN_FAILED, "message" => "Invalid credentials."]);
                 exit;
             }
         } else {
-            makeLog("API-Login", $key, "", 2);
+            makeLog("API-Login", $key, "Username: $username, or Email: $email, unvalid", 2);
 
             // Debugging output
             // echo "A";
