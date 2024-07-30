@@ -78,7 +78,7 @@ This API is made to centralize data from different applications and by example s
 
 - __[Project](#project)__ :
   | Function | Description | Code |
-  | --- | --- | --- | --- |
+  | --- | --- | --- |
   | `REGISTER_USER` | Allows you to register new users on the network | 0 |
   | `LOGIN_USER` | Allow you to login user | 1 |
   | `PERMISSION_SEND_MAIL` | Allow you to send mail with the email address of the API | 2 |
@@ -235,6 +235,7 @@ This API is made to centralize data from different applications and by example s
 
 > [!IMPORTANT]\
 > Mailer can be disabled by your API administrator so try to use a function of this section to test if it's enabled or not or demand to your API administrator.
+
 > [!NOTE]\
 > For all interaction with the Account API, you need to make your query to `http://localhost/api/mailer/`.
 
