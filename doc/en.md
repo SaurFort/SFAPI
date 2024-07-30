@@ -92,6 +92,7 @@ This API is made to centralize data from different applications and by example s
 
 > [!IMPORTANT]\
 > For all examples, we're gonna use the API like in local development `http://localhost/api`.
+
 > [!WARNING]\
 > For any interaction with the API, you'll need to enter your API key!
 
@@ -128,6 +129,7 @@ This API is made to centralize data from different applications and by example s
 
 > [!NOTE]\
 > You can authenticate the user with his username or email address or the both.
+
 > [!WARNING]\
 > You need at least one identifier between `username` and `email` to authenticate the user.
 > The `username` field is case sensitive.
@@ -182,8 +184,10 @@ This API is made to centralize data from different applications and by example s
 
 > [!IMPORTANT]\
 > `password` field store the password destinated to be hashed so you can hash it before giving to the API but it's very important to respect exactly the [algorithm and parameters](#register---password-hash) used by the API.
+
 > [!WARNING]\
 > `username`, `email`, `password` and `confirmationPassword` fields are necessary in the query body.
+
 > [!NOTE]\
 > `rank` field is not required because if it's not defined the user will obtain the rank __user__. Rank don't have determined permissions by the API because it's at application using the API to define their permissions.
 
@@ -191,6 +195,7 @@ This API is made to centralize data from different applications and by example s
 
 > [!IMPORTANT]\
 > The API used the algorithm __Argon2id__, it's a recent algorithm with excellent security performance againt brute-force.
+
 > [!WARNING]\
 > If you trying to used an other algorithm, the API will refuse your registration.
 > If you trying to used __Argon2id__ but not with the same parameters of the API, the API will refuse your registration.
@@ -243,6 +248,7 @@ This API is made to centralize data from different applications and by example s
 
 > [!WARNING]\
 > Actually this function is experimental because there is no limitation in sending emails, and emails can be put into spams.
+
 > [!IMPORTANT]\
 > To send an email, you need to make your query at: `http://localhost/api/mailer/send.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
 > Send Mail API only takes __PUT__ query.
@@ -259,6 +265,7 @@ This API is made to centralize data from different applications and by example s
 > [!IMPORTANT]\
 > All fiels are required.
 > The email address used to send email is set by your API administrator.
+
 > [!NOTE]\
 > `body` fields support HTML so you can send email with HTML to make your email prettier
 
@@ -298,6 +305,7 @@ This API is made to centralize data from different applications and by example s
 > [!IMPORTANT]\
 > `name`, `technologies`, `description-en` fiels are required to create a project in the API.
 > If you set a value for `owner` field other of your username, you may be have an error if you don't have the permissions.
+
 > [!NOTE]\
 > `creation` field is under the format: `Y-m-d`, if you don't set a value for it, the date of day will be taken.
 
@@ -344,6 +352,7 @@ This API is made to centralize data from different applications and by example s
 > `sort` accepts only two values: `latest` or `oldest`.
 > `filtertype` accepts only two values: `id` or `name`.
 > If you tried to list projects of an owner other than you, you may be have an error if you don't have the right permissions.
+
 > [!WARNING]\
 > If `filter` is defined and `filtertype` is not provided, an error may occur.
 
@@ -473,6 +482,7 @@ This API is made to centralize data from different applications and by example s
 > [!IMPORTANT]\
 > `id` field is required to find the project.
 > If you try to update a project other than your's, you may be have an error if you don't have the permissions to do that.
+
 > [!NOTE]\
 > You're not forced to put all data just the data you want to be updated.
 
