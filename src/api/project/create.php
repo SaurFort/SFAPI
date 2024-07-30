@@ -123,8 +123,9 @@
                     $query = "INSERT INTO project_translations (project_id, language, description) VALUES (?, ?, ?)";
                     $stmt = $conn->prepare($query);
 
-                    if ($stmt === false) {
-                        echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Error: " . $conn->error]);
+                    if($stmt === false) {
+                        makeLog($loggerName, $key, "SQL Prepare Error: " . $conn->error, 2);
+                        echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
                         exit;
                     }
 
