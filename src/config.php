@@ -1,7 +1,7 @@
 <?php
     // API Info
     define("NAME", "SFAPI");
-    define("VERSION", "0.7.0");
+    define("VERSION", "0.8.0");
     define("CREATORS", "SaurFort");
     define("AVAILABLE_LANGUAGES", "en;fr");
 
@@ -10,7 +10,7 @@
     define("KEY_PREFIX", "apiv0_");         // API Key prefix
 
     // Database 
-    define("DB_SERVER", "localhost:3306");
+    define("DB_SERVER", "localhost:3308");
     define("DB_NAME", "saurfort");
     define("DB_USERNAME", "root");
     define("DB_PASSWORD", "");
@@ -27,11 +27,12 @@
     // API Permissions
     define("PERMISSION_REGISTER_USER", 0);
     define("PERMISSION_LOGIN_USER", 1);
-    define("PERMISSION_CREATE_PROJECTS", 2);
-    define("PERMISSION_READ_PROJECTS", 3);
-    define("PERMISSION_UPDATE_PROJECTS", 4);
-    define("PERMISSION_DELETE_PROJECTS", 5);
-    define("PERMISSION_SEND_MAIL", 6);
+    define("PERMISSION_SEND_MAIL", 2);
+    define("PERMISSION_CREATE_PROJECTS", 3);
+    define("PERMISSION_READ_PROJECTS", 4);
+    define("PERMISSION_UPDATE_PROJECTS", 5);
+    define("PERMISSION_DELETE_PROJECTS", 6);
+    define("PERMISSION_OTHER_USERS_PROJECTS", 7);
 
     // API Code
     define("QUERY_WORKED_SUCCESSFULLY", "01");
@@ -48,10 +49,9 @@
     define("MAILER_DISABLED", "20");
     define("MAILER_SEND_EMAIL_ARGUMENT_ERROR", "21");
     define("MAILER_SEND_EMAIL_FAILED", "22");
-    define("PROJECT_ACTION_ERROR", "30");
-    define("PROJECT_CREATE_ARGUMENT_ERROR", "31");
-    define("PROJECT_UPDATE_ARGUMENT_ERROR", "32");
-    define("PROJECT_DELETE_ARGUMENT_ERROR", "33");
+    define("PROJECT_CREATE_ARGUMENT_ERROR", "30");
+    define("PROJECT_UPDATE_ARGUMENT_ERROR", "31");
+    define("PROJECT_DELETE_ARGUMENT_ERROR", "32");
     define("PROJECT_READ_ARGUMENT_ERROR", "34");
     define("SQL_QUERY_ERROR", "90");
     define("SQL_QUERY_EMPTY_ROW_ERROR", "91");
