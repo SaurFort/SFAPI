@@ -83,7 +83,7 @@ This API is made to centralize data from different applications and by example s
   | `LOGIN_USER` | Allow you to login user | 1 |
   | `PERMISSION_SEND_MAIL` | Allow you to send mail with the email address of the API | 2 |
   | `CREATE_PROJECTS` | Create new projects | 3 |
-    | `READ_PROJECTS`| Allows you to read project information. | 4 |
+  | `READ_PROJECTS`| Allows you to read project information. | 4 |
   | `UPDATE_PROJECTS` | Allows you to update information on existing projects. | 5 |
   | `DELETE_PROJECTS` | Delete existing projects. | 6 |
   | `PERMISSION_OTHER_USERS_PROJECTS` | Allow you to access project of other users | 7 |
@@ -233,7 +233,7 @@ This API is made to centralize data from different applications and by example s
 
 ### Mailer
 
-> [IMPORTANT]\
+> [!IMPORTANT]\
 > Mailer can be disabled by your API administrator so try to use a function of this section to test if it's enabled or not or demand to your API administrator.
 > [!NOTE]\
 > For all interaction with the Account API, you need to make your query to `http://localhost/api/mailer/`.
