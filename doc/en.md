@@ -1,66 +1,68 @@
-# SFAPI <!-- omit in toc -->
+# SFAPI `<!-- omit in toc -->`
 
 This API is made to centralize data from different applications and by example simplyfy account credentials by making it accessible to all applications (if they have the corresponding permissions).
 
-## Summary <!-- omit in toc -->
+## Summary `<!-- omit in toc -->`
 
-- [API key](#api-key)
-  - [Version 0 (v0)](#version-0-v0)
-  - [Permissions](#permissions)
-- [Usage available](#usage-available)
-  - [Account](#account)
-    - [Login](#login)
-      - [Login - Arguments](#login---arguments)
-      - [Login - Example Requests](#login---example-requests)
-    - [Register](#register)
-      - [Register - Arguments](#register---arguments)
-      - [Register - Password Hash](#register---password-hash)
-      - [Register - Example Requests](#register---example-requests)
-  - [Mailer](#mailer)
-    - [Send](#send)
-      - [Send - Arguments](#send---arguments)
-      - [Send - Example Requests](#send---example-requests)
-  - [Project](#project)
-    - [Create](#create)
-      - [Create - Arguments](#create---arguments)
-      - [Create - Example Requests](#create---example-requests)
-    - [Read](#read)
-      - [Read - Arguments](#read---arguments)
-      - [Read - Example Requests](#read---example-requests)
-    - [Update](#update)
-      - [Update - Arguments](#update---arguments)
-      - [Update - Example Request](#update---example-request)
-    - [Delete](#delete)
-      - [Delete - Arguments](#delete---arguments)
-      - [Delete - Example Requests](#delete---example-requests)
-- [API Codes](#api-codes)
-  - [Code 01](#code-01)
-  - [Code 02](#code-02)
-  - [Code 10](#code-10)
-  - [Code 11](#code-11)
-  - [Code 12](#code-12)
-  - [Code 13](#code-13)
-  - [Code 14](#code-14)
-  - [Code 15](#code-15)
-  - [Code 16](#code-16)
-  - [Code 17](#code-17)
-  - [Code 18](#code-18)
-  - [Code 20](#code-20)
-  - [Code 21](#code-21)
-  - [Code 22](#code-22)
-  - [Code 30](#code-30)
-  - [Code 31](#code-31)
-  - [Code 32](#code-32)
-  - [Code 33](#code-33)
-  - [Code 90](#code-90)
-  - [Code 91](#code-91)
-- [Versions](#versions)
-- [About Security](#about-security)
-  - [Knowed Issues](#knowed-issues)
+- [SFAPI `<!-- omit in toc -->`](#sfapi----omit-in-toc---)
+  - [Summary `<!-- omit in toc -->`](#summary----omit-in-toc---)
+  - [API key](#api-key)
+    - [Version 0 (v0)](#version-0-v0)
+    - [Permissions](#permissions)
+  - [Usage available](#usage-available)
+    - [Account](#account)
+      - [Login](#login)
+        - [Login - Arguments](#login---arguments)
+        - [Login - Example Requests](#login---example-requests)
+      - [Register](#register)
+        - [Register - Arguments](#register---arguments)
+        - [Register - Password Hash](#register---password-hash)
+        - [Register - Example Requests](#register---example-requests)
+    - [Mailer](#mailer)
+      - [Send](#send)
+        - [Send - Arguments](#send---arguments)
+        - [Send - Example Requests](#send---example-requests)
+    - [Project](#project)
+      - [Create](#create)
+        - [Create - Arguments](#create---arguments)
+        - [Create - Example Requests](#create---example-requests)
+      - [Read](#read)
+        - [Read - Arguments](#read---arguments)
+        - [Read - Example Requests](#read---example-requests)
+      - [Update](#update)
+        - [Update - Arguments](#update---arguments)
+        - [Update - Example Request](#update---example-request)
+      - [Delete](#delete)
+        - [Delete - Arguments](#delete---arguments)
+        - [Delete - Example Requests](#delete---example-requests)
+  - [API Codes](#api-codes)
+    - [Code 01](#code-01)
+    - [Code 02](#code-02)
+    - [Code 10](#code-10)
+    - [Code 11](#code-11)
+    - [Code 12](#code-12)
+    - [Code 13](#code-13)
+    - [Code 14](#code-14)
+    - [Code 15](#code-15)
+    - [Code 16](#code-16)
+    - [Code 17](#code-17)
+    - [Code 18](#code-18)
+    - [Code 20](#code-20)
+    - [Code 21](#code-21)
+    - [Code 22](#code-22)
+    - [Code 30](#code-30)
+    - [Code 31](#code-31)
+    - [Code 32](#code-32)
+    - [Code 33](#code-33)
+    - [Code 90](#code-90)
+    - [Code 91](#code-91)
+  - [Versions](#versions)
+  - [About Security](#about-security)
+    - [Knowed Issues](#knowed-issues)
 
 ## API key
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > API keys can be distinct for each major API version and have specific permissions defined according to requirements. Each major API version has its own key prefix, enabling more precise and secure access management.
 
 ### Version 0 (v0)
@@ -72,67 +74,72 @@ This API is made to centralize data from different applications and by example s
 
 ### Permissions
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > There's a whole list of permissions for the API, so if a key doesn't have the permission, the API won't respond to the request.
+>
 > You can refer to the [config file](../src/config.php) for all permissions and permissions code definitions.
 
-- __[Project](#project)__ :
-  | Function | Description | Code |
-  | --- | --- | --- |
-  | `REGISTER_USER` | Allows you to register new users on the network | 0 |
-  | `LOGIN_USER` | Allow you to login user | 1 |
-  | `PERMISSION_SEND_MAIL` | Allow you to send mail with the email address of the API | 2 |
-  | `CREATE_PROJECTS` | Create new projects | 3 |
-  | `READ_PROJECTS`| Allows you to read project information. | 4 |
-  | `UPDATE_PROJECTS` | Allows you to update information on existing projects. | 5 |
-  | `DELETE_PROJECTS` | Delete existing projects. | 6 |
-  | `PERMISSION_OTHER_USERS_PROJECTS` | Allow you to access project of other users | 7 |
+| Function                            | Description                                              | Code |
+| ----------------------------------- | -------------------------------------------------------- | ---- |
+| `REGISTER_USER`                   | Allows you to register new users on the network          | 0    |
+| `LOGIN_USER`                      | Allow you to login user                                  | 1    |
+| `PERMISSION_SEND_MAIL`            | Allow you to send mail with the email address of the API | 2    |
+| `CREATE_PROJECTS`                 | Create new projects                                      | 3    |
+| `READ_PROJECTS`                   | Allows you to read project information.                  | 4    |
+| `UPDATE_PROJECTS`                 | Allows you to update information on existing projects.   | 5    |
+| `DELETE_PROJECTS`                 | Delete existing projects.                                | 6    |
+| `PERMISSION_OTHER_USERS_PROJECTS` | Allow you to access project of other users               | 7    |
 
 ## Usage available
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > For all examples, we're gonna use the API like in local development `http://localhost/api`.
 
-> [!WARNING]\
+> [!WARNING]
 > For any interaction with the API, you'll need to enter your API key!
 
-| Category | Action | Method |
-| --- | --- | --- |
-| __Account__ | `login.php` | __POST__ |
-| __Account__ | `register.php` | __POST__ |
-| __Mailer__ | `send.php` | __PUT__ |
-| __Project__ | `create.php` | __POST__ |
-| __Project__ | `read.php` | __GET__ |
-| __Project__ | `update.php` | __PUT__ |
-| __Project__ | `delete.php` | __DELETE__ |
+| Category          | Action           | Method           |
+| ----------------- | ---------------- | ---------------- |
+| __Account__ | `login.php`    | __POST__   |
+| __Account__ | `register.php` | __POST__   |
+| __Mailer__  | `send.php`     | __PUT__    |
+| __Project__ | `create.php`   | __POST__   |
+| __Project__ | `read.php`     | __GET__    |
+| __Project__ | `update.php`   | __PUT__    |
+| __Project__ | `delete.php`   | __DELETE__ |
 
 ### Account
 
-> [!NOTE]\
+> [!NOTE]
 > All accounts registered in the API will be available on all application using the API and if there have the corresponding permissions.
+>
 > For all interaction with the Account API, you need to make your query to `http://localhost/api/account/`.
 
 #### Login
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > For login an user, you need to make your query at: `http://localhost/api/account/login.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+>
 > Login API only takes __POST__ query.
+>
 > Login API accept only raw json data.
 
 ##### Login - Arguments
 
-| Name | Description | Type |
-| --- | --- | --- |
-| `username` | Username of the user | string |
-| `email` | Email address of the user | string |
-| `password` | Password of the user | string |
+| Name         | Description               | Type   |
+| ------------ | ------------------------- | ------ |
+| `username` | Username of the user      | string |
+| `email`    | Email address of the user | string |
+| `password` | Password of the user      | string |
 
-> [!NOTE]\
+> [!NOTE]
 > You can authenticate the user with his username or email address or the both.
 
-> [!WARNING]\
+> [!WARNING]
 > You need at least one identifier between `username` and `email` to authenticate the user.
+>
 > The `username` field is case sensitive.
+>
 > The `password` field is necessary, the API won't accept an empty password.
 
 ##### Login - Example Requests
@@ -154,7 +161,7 @@ This API is made to centralize data from different applications and by example s
     "password": "password"
   }
   ```
-
+  
 - Best login query body:
 
   ```json
@@ -167,48 +174,52 @@ This API is made to centralize data from different applications and by example s
 
 #### Register
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > For register an user, you need to make your query at: `http://localhost/api/account/register.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+>
 > Register API only takes __POST__ query.
+>
 > Register API accept only raw json data.
 
 ##### Register - Arguments
 
-| Name | Description | Type |
-| --- | --- | --- |
-| `username` | Username of the user | string (VARCHAR(35)) |
-| `email` | Email address of the user | string (VARCHAR(55)) |
-| `password` | Password of the user | string (TEXT) |
-| `confirmationPassword` | Password confirmation of the user | string (TEXT) |
-| `rank` | Rank of the user | string (TEXT) |
+| Name                     | Description                       | Type                 |
+| ------------------------ | --------------------------------- | -------------------- |
+| `username`             | Username of the user              | string (VARCHAR(35)) |
+| `email`                | Email address of the user         | string (VARCHAR(55)) |
+| `password`             | Password of the user              | string (TEXT)        |
+| `confirmationPassword` | Password confirmation of the user | string (TEXT)        |
+| `rank`                 | Rank of the user                  | string (TEXT)        |
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > `password` field store the password destinated to be hashed so you can hash it before giving to the API but it's very important to respect exactly the [algorithm and parameters](#register---password-hash) used by the API.
 
-> [!WARNING]\
+> [!WARNING]
 > `username`, `email`, `password` and `confirmationPassword` fields are necessary in the query body.
 
-> [!NOTE]\
+> [!NOTE]
 > `rank` field is not required because if it's not defined the user will obtain the rank __user__. Rank don't have determined permissions by the API because it's at application using the API to define their permissions.
 
 ##### Register - Password Hash
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > The API used the algorithm __Argon2id__, it's a recent algorithm with excellent security performance againt brute-force.
 
-> [!WARNING]\
+> [!WARNING]
 > If you trying to used an other algorithm, the API will refuse your registration.
+>
 > If you trying to used __Argon2id__ but not with the same parameters of the API, the API will refuse your registration.
 
-| Parameter name | API used value |
-| --- | --- |
-| __Parallelism Factor__ | `1` |
-| __Memory Cost__ | `65536` |
-| __Iterations__ | `4` |
-| __Hash Length__ | `19` |
+| Parameter name               | API used value |
+| ---------------------------- | -------------- |
+| __Parallelism Factor__ | `1`          |
+| __Memory Cost__        | `65536`      |
+| __Iterations__         | `4`          |
+| __Hash Length__        | `19`         |
 
-> [!NOTE]\
+> [!NOTE]
 > The API don't set manually the salt of the algorithm because it's generated randomly for a better security.
+>
 > To see if your algorithm is correctly configured you just need to check the start of your hashed password and if it's exactly the same at `$argon2id$v=19$m=65536,t=4,p=1` then your algorithm is correctly configured.
 
 ##### Register - Example Requests
@@ -238,35 +249,38 @@ This API is made to centralize data from different applications and by example s
 
 ### Mailer
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > Mailer can be disabled by your API administrator so try to use a function of this section to test if it's enabled or not or demand to your API administrator.
 
-> [!NOTE]\
+> [!NOTE]
 > For all interaction with the Account API, you need to make your query to `http://localhost/api/mailer/`.
 
 #### Send
 
-> [!WARNING]\
+> [!WARNING]
 > Actually this function is experimental because there is no limitation in sending emails, and emails can be put into spams.
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > To send an email, you need to make your query at: `http://localhost/api/mailer/send.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+>
 > Send Mail API only takes __PUT__ query.
+>
 > Send Mail API accept only raw json data.
 
 ##### Send - Arguments
 
-| Name | Description | Type |
-| --- | --- | --- |
-| `email` | Recipient email address | string |
-| `subject` | Email subject | string |
-| `body` | Email body | string |
+| Name        | Description             | Type   |
+| ----------- | ----------------------- | ------ |
+| `email`   | Recipient email address | string |
+| `subject` | Email subject           | string |
+| `body`    | Email body              | string |
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > All fiels are required.
+>
 > The email address used to send email is set by your API administrator.
 
-> [!NOTE]\
+> [!NOTE]
 > `body` fields support HTML so you can send email with HTML to make your email prettier
 
 ##### Send - Example Requests
@@ -281,32 +295,35 @@ This API is made to centralize data from different applications and by example s
 
 ### Project
 
-> [!NOTE]\
+> [!NOTE]
 > For all interaction with the Account API, you need to make your query to `http://localhost/api/project/`.
 
 #### Create
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > To create a project, you need to make your query at: `http://localhost/api/project/create.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+>
 > Create Project API only takes __POST__ query.
+>
 > Create Project API accept only raw json data.
 
 ##### Create - Arguments
 
-| Name | Description | Type |
-| --- | --- | --- |
-| `name` | Set the project's name | string _(VARCHAR(30)_) |
-| `technologies` | Set technologies used for project | string _(TEXT)_ |
-| `creation` | Set the creation date of the project | string (DATE) |
-| `description-en` | Set the English description of the project | string _(TEXT)_ |
-| `description-fr` | Set the French description of the project | string _(TEXT)_ |
-| `owner` | Set the owner of project | string _(TEXT)_ |
+| Name               | Description                                | Type                  |
+| ------------------ | ------------------------------------------ | --------------------- |
+| `name`           | Set the project's name                     | string_(VARCHAR(30)_) |
+| `technologies`   | Set technologies used for project          | string_(TEXT)_        |
+| `creation`       | Set the creation date of the project       | string (DATE)         |
+| `description-en` | Set the English description of the project | string_(TEXT)_        |
+| `description-fr` | Set the French description of the project  | string_(TEXT)_        |
+| `owner`          | Set the owner of project                   | string_(TEXT)_        |
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > `name`, `technologies`, `description-en` fiels are required to create a project in the API.
+>
 > If you set a value for `owner` field other of your username, you may be have an error if you don't have the permissions.
 
-> [!NOTE]\
+> [!NOTE]
 > `creation` field is under the format: `Y-m-d`, if you don't set a value for it, the date of day will be taken.
 
 ##### Create - Example Requests
@@ -332,28 +349,32 @@ This API is made to centralize data from different applications and by example s
 
 #### Read
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > To read a project, you need to make your query at: `http://localhost/api/project/read.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+>
 > Read Project API only takes __GET__ query.
 
 ##### Read - Arguments
 
-| Name | Description | Type | Default value |
-| --- | --- | --- | --- |
-| `lang` | Take translation of the project description. | string (en) | en |
-| `sort` | Sort results by creation date. | latest/oldest | latest |
-| `filtertype` | Permit to define the filter you want to use. | string | _null_ |
-| `filter` | Permit to define the value of filter. | string | _null_ |
-| `limit` | Limit the number of projects sorted. | int | -1 (all project) |
-| `owner` | Gets projects of a specific owner | string | your username |
+| Name           | Description                                 | Type          | Default value    |
+| -------------- | ------------------------------------------- | ------------- | ---------------- |
+| `lang`       | Take translation of the project description | string (en)   | en               |
+| `sort`       | Sort results by creation date               | latest/oldest | latest           |
+| `filtertype` | Permit to define the filter you want to use | string        | _null_         |
+| `filter`     | Permit to define the value of filter        | string        | _null_         |
+| `limit`      | Limit the number of projects sorted         | int           | -1 (all project) |
+| `owner`      | Gets projects of a specific owner           | string        | your username    |
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > For the moment, `lang` supports only English (en) and French (fr).
+>
 > `sort` accepts only two values: `latest` or `oldest`.
+>
 > `filtertype` accepts only two values: `id` or `name`.
+>
 > If you tried to list projects of an owner other than you, you may be have an error if you don't have the right permissions.
 
-> [!WARNING]\
+> [!WARNING]
 > If `filter` is defined and `filtertype` is not provided, an error may occur.
 
 ##### Read - Example Requests
@@ -384,7 +405,7 @@ This API is made to centralize data from different applications and by example s
   ```
 
 - Get the first 5 projects sorted by oldest:
-  
+
   ```http
   GET http://localhost/api/project.php?sort=oldest&limit=5
   ```
@@ -422,11 +443,11 @@ This API is made to centralize data from different applications and by example s
   ]
   ```
 
-> [!NOTE]\
+> [!NOTE]
 > If there aren't enough rows for your limit, the API returns the max reachable.
 
 - Filter by project's id:
-  
+
   ```http
   GET http://localhost/api/project.php?filtertype=id&filter=1
   ```
@@ -463,27 +484,30 @@ This API is made to centralize data from different applications and by example s
 
 #### Update
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > To update a project, you need to make your query at: `http://localhost/api/project/update.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+>
 > Update Project API only takes __PUT__ query.
+>
 > Update Project API accept only raw json data.
 
 ##### Update - Arguments
 
-| Name | Description | Type |
-| --- | --- | --- |
-| `id` | Find the corresponding project and translations | int (INT) |
-| `name` | Set the project's name | string _(VARCHAR(30)_) |
-| `technologies` | Set technologies used for project | string _(TEXT)_ |
-| `creation` | Set the creation date of the project | string (DATE) |
-| `description-en` | Set the English description of the project | string _(TEXT)_ |
-| `description-fr` | Set the French description of the project | string _(TEXT)_ |
+| Name               | Description                                     | Type                  |
+| ------------------ | ----------------------------------------------- | --------------------- |
+| `id`             | Find the corresponding project and translations | int (INT)             |
+| `name`           | Set the project's name                          | string_(VARCHAR(30)_) |
+| `technologies`   | Set technologies used for project               | string_(TEXT)_        |
+| `creation`       | Set the creation date of the project            | string (DATE)         |
+| `description-en` | Set the English description of the project      | string_(TEXT)_        |
+| `description-fr` | Set the French description of the project       | string_(TEXT)_        |
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > `id` field is required to find the project.
+>
 > If you try to update a project other than your's, you may be have an error if you don't have the permissions to do that.
 
-> [!NOTE]\
+> [!NOTE]
 > You're not forced to put all data just the data you want to be updated.
 
 ##### Update - Example Request
@@ -507,20 +531,24 @@ This API is made to centralize data from different applications and by example s
 
 #### Delete
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > To delete a project, you need to make your query at: `http://localhost/api/project/delete.php?key=apiv0_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+>
 > Update Project API only takes __DELETE__ query.
+>
 > Update Project API accept only raw json data.
 
 ##### Delete - Arguments
 
-| Name | Description | Type |
-| --- | --- | --- |
+| Name   | Description                                     | Type      |
+| ------ | ----------------------------------------------- | --------- |
 | `id` | Find the corresponding project and translations | int (INT) |
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > `id` field is required to delete the project.
+>
 > If you try to delete a project other than your's, you may be have an error if you don't have the permissions to do that.
+>
 > When you delete a project, everything is deleted, project and project's translations.
 
 ##### Delete - Example Requests
@@ -533,32 +561,32 @@ This API is made to centralize data from different applications and by example s
 
 ## API Codes
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > All of this code has been maded to be more informative.
 
-| Code | Description | Variation |
-| --- | --- | --- |
-| 01 | Query has been complete successfully | _none_ |
-| 02 | Invalid method | _none_ |
-| 10 | Empty API key | _none_ |
-| 11 | API key incompatible with version | _none_ |
-| 12 | API key does not have requested permission | _none_ |
-| 13 | Incorrect API key | _none_ |
-| 14 | Invalid argument for register | A,B,C,D |
-| 15 | Invalid password for register | A,B,C,D |
-| 16 | Account already registered | _none_ |
-| 17 | Invalid argument for login | A,B |
-| 18 | Login account failed | _none_ |
-| 20 | Mailing functionnality is disabled | _none_ |
-| 21 | Invalid argument for send email API | A,B,C |
-| 22 | Error when sending an email | _none_ |
-| 30 | Invalid argument for create project API | A,B,C,D,E,F |
-| 31 | Invalid argument for update project API | _none_ |
-| 32 | Invalid argument for delete project API | _none_ |
-| 33 | Invalid argument for read project API | A,B,C,D,E |
-| 90 | SQL query error | _none_ |
-| 91 | SQL query result is empty | _none_ |
-| 92 | Error when preparing SQL query | _none_ |
+| Code | Description                                | Variation   |
+| ---- | ------------------------------------------ | ----------- |
+| 01   | Query has been complete successfully       | _none_    |
+| 02   | Invalid method                             | _none_    |
+| 10   | Empty API key                              | _none_    |
+| 11   | API key incompatible with version          | _none_    |
+| 12   | API key does not have requested permission | _none_    |
+| 13   | Incorrect API key                          | _none_    |
+| 14   | Invalid argument for register              | A,B,C,D     |
+| 15   | Invalid password for register              | A,B,C,D     |
+| 16   | Account already registered                 | _none_    |
+| 17   | Invalid argument for login                 | A,B         |
+| 18   | Login account failed                       | _none_    |
+| 20   | Mailing functionnality is disabled         | _none_    |
+| 21   | Invalid argument for send email API        | A,B,C       |
+| 22   | Error when sending an email                | _none_    |
+| 30   | Invalid argument for create project API    | A,B,C,D,E,F |
+| 31   | Invalid argument for update project API    | _none_    |
+| 32   | Invalid argument for delete project API    | _none_    |
+| 33   | Invalid argument for read project API      | A,B,C,D,E   |
+| 90   | SQL query error                            | _none_    |
+| 91   | SQL query result is empty                  | _none_    |
+| 92   | Error when preparing SQL query             | _none_    |
 
 ### Code 01
 
@@ -603,7 +631,7 @@ This code indicates an invalid password for registration.
 - __15B__: Argument `password` used the correct algorithm but not the right parameters. (For example, you have make an error when you've done the parameters of algorithm).
 - __15C__: Arguments `password` and `confirmationPassword` are not the same. (For example, you've used an algorithm that haven't been referenced in not supported algorithms).
 - __15D__: Argument `password` was not hashed correctly by the API. Just retry and if the problem persists contact you API administrator.
-  
+
 ### Code 16
 
 This code indicates that the username or email address is already used on an other account.
@@ -674,22 +702,22 @@ This code indicates that the SQL query executed successfully but returned no row
 
 ## Versions
 
-> [!NOTE]\
+> [!NOTE]
 > List of all versions and whether they are still active or not.
 > Early development versions are listed but are not hosted on a public server.
 > `early development` version don't have listed functionality.
 
-| Version | Version Type | Status |
-| --- | --- | --- |
-| v0.6.0 | `early development` | __private__ |
-| v0.7.0 | `early development` | __private__ |
-| v0.8.0 | `early development` | __private__ |
+| Version | Version Type          | Status            |
+| ------- | --------------------- | ----------------- |
+| v0.6.0  | `early development` | __private__ |
+| v0.7.0  | `early development` | __private__ |
+| v0.8.0  | `early development` | __private__ |
 
 ## About Security
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > Security is a critical aspect of any API. This section covers the security measures implemented in this API and best practices for ensuring secure usage.
-> [!NOTE]\
+> [!NOTE]
 > I have planned to make a Capture The Flag (CTF) on a test environment but the API is actually in too early development so I'm just getting the necessary time to create all the basis functionality. If you want to participate at this CTF or your just want to break the API, you can contact me at: `contact@saurfort.fr`.
 > All the result of security test maded will be describe below.
 
