@@ -1,5 +1,8 @@
 <?php
     function verifyAPIKey(string $key) {
+        // Intentional delay to make request slower.
+        sleep(API_DELAY);
+
         if (empty($key)) {
             makeLog("API-KeyVerification", "", "An user tried to access the API without key", 2);
             echo json_encode(["code" => EMPTY_API_KEY, "message" => "You haven't set your API key."]);
@@ -7,7 +10,7 @@
         } elseif (str_starts_with($key, KEY_PREFIX)) { // Check version
             include('../database.php');
 
-            $query = "SELECT api.api_key, api.perms, api.owner FROM api_keys api WHERE api.api_key = ?";
+            $query = "SELECT api.api_key, api.perms, api.owner, api.is_active FROM api_keys api WHERE api.api_key = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("s", $key);
             $stmt->execute();
@@ -18,6 +21,13 @@
 
                 $perms = $row['perms'];
                 $owner = $row['owner'];
+                $isActive = $row['is_active'];
+
+                if($isActive !== 1) {
+                    makeLog("API-KeyVerification", $key, "$owner tried to use a disabled key", 2);
+                    echo json_encode(["code" => API_KEY_DISABLED, "message" => "Your api key is disabled"]);
+                    exit;
+                }
 
                 // Debug: Display retrieved permissions
                 // var_dump($row['perms']);
@@ -36,14 +46,17 @@
         }
     }
 
-    function verifyKeyPerms(string $key, string $keyPerms, int $requiredPermsCode) {
+    function verifyKeyPerms(string $key, string $keyPerms, int $requiredPermsCode, bool $superKey = false) {
         // Debug: Display permissions before processing them
         // var_dump($keyPerms);
 
-        if ($keyPerms === "*") {
+        if ($keyPerms === "*" && $superKey) {
+            makeLog("API-KeyVerification", $key, "A super key was used in a part of API who need it", 4);
+            return true;
+        } elseif($keyPerms === "*" && !$superKey) {
             makeLog("API-KeyVerification", $key, "A super key was used", 3);
             return true;
-        } else {
+        } elseif(!$superKey) {
             // Remove any trailing spaces and semicolons
             $keyPerms = trim($keyPerms, " ;");
             
@@ -62,6 +75,10 @@
                 echo json_encode(["code" => API_KEY_PERMISSION_ERROR, "message" => "You don't have the permission number " . $requiredPermsCode]);
                 exit;
             }
+        } else {
+            makeLog("API-KeyVerification", $key, "Super key needed but no valid super key provided", 4);
+            echo json_encode(["code" => API_KEY_SUPERKEY_NEEDED, "message" => "A super key is needed but you don't have a super key"]);
+            exit;
         }
     }
 
