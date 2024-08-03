@@ -92,7 +92,7 @@
         $stmt = $conn->prepare($query);
 
         if($stmt === false) {
-            makeLog("API-CreateProject", $key, "SQL Prepare Error: " . $conn->error, 2);
+            makeLog($loggerName, $key, "SQL Prepare Error: " . $conn->error, 2);
             echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
             exit;
         }
@@ -121,7 +121,7 @@
         $result = $stmt->get_result();
 
         if($result === false) {
-            makeLog("API-CreateProject", $key, "SQL Error: " . $conn->error, 2);
+            makeLog($loggerName, $key, "SQL Error: " . $conn->error, 2);
             echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
             exit;
         }
@@ -134,14 +134,14 @@
         }
 
         if(empty($projects)) {
-            makeLog("API-CreateProject", $key, "SQL Empty Row, no projects found for user $owner", 2);
+            makeLog($loggerName, $key, "SQL Empty Row, no projects found for user $owner", 2);
             echo json_encode(["code" => SQL_QUERY_EMPTY_ROW_ERROR, "message" => "No projects found."]);
         } else {
             $projectsString = "";
             foreach ($projects as $project) {
                 $projectsString .= "Name: " . $project['name'] . " ;";
             }
-            makeLog("API-CreateProject", $key, "Getted projects: $projectsString", 2);
+            makeLog($loggerName, $key, "Getted projects: $projectsString", 2);
             echo json_encode($projects);
         }
     } else {

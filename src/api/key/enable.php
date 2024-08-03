@@ -11,7 +11,7 @@
     $loggerName = "API-EnableKey";
 
     // Check if the key is valid and the action is defined
-    $perms = verifyAPIKey($key);
+    $perms = verifyAPIKey($key, false);
     if($perms === null) {
         exit; // The verifyAPIKey function has already returned an appropriate response and terminated the execution
     }
@@ -22,9 +22,41 @@
     
     if($_SERVER['REQUEST_METHOD'] === 'PUT') {
         $data = json_decode(file_get_contents("php://input"), true);
+
+        if(isset($data['key']) && verifyKeyPerms($perms, $key, PERMISSION_ACCESS_OTHER_USER_KEY, true)) {
+            $targetKey = $data['key'];
+        } elseif(isset($data['key']) && !verifyKeyPerms($perms, $key, PERMISSION_ACCESS_OTHER_USER_KEY, true)) {
+            makeLog($loggerName, $key, "An user tried to enable a key of an other user, targeted key: " . $data['key'], 2);
+            echo json_encode(["code" => API_KEY_ENABLE_OR_DISABLE_ARGUMENT_ERROR . "A", "message" => "You can't enable the key of an other user"]);
+            exit;
+        } else {
+            $targetKey = $key;
+        }
+
+        $status = 1;
+
+        $query = "UPDATE api_keys SET is_active = ? WHERE api_key = ?";
+        $stmt = $conn->prepare($query);
+
+        if($stmt === false) {
+            makeLog($loggerName, $key, "SQL Prepare Error: " . $conn->error, 2);
+            echo json_encode(["code" => SQL_PREPARE_ERROR, "message" => "SQL Prepare Error: " . $conn->error]);
+            exit;
+        }
+
+        $stmt->bind_param("is", $status, $targetKey);
+
+        if($stmt->execute()) {
+            makeLog($loggerName, $key, "$targetKey was successfully enabled", 3);
+            echo json_encode(["code" => QUERY_WORKED_SUCCESSFULLY, "message" => "The key was successfully enabled"]);
+        } else {
+            makeLog($loggerName, $key, "SQL Error: " . $conn->error, 2);
+            echo json_encode(["code" => SQL_QUERY_ERROR, "message" => "SQL Error: " . $conn->error]);
+            exit;
+        }
     } else {
         makeLog($loggerName, $key, "Wrong method request", 1);
-        echo json_encode(["code" => INVALID_API_METHOD, "message" => "Create project API can only take PUT method"]);
+        echo json_encode(["code" => INVALID_API_METHOD, "message" => "Enable key API can only take PUT method"]);
         exit;
     }
 ?>
