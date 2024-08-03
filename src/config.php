@@ -11,7 +11,7 @@
     define("API_DELAY", 1);                             // API delay in seconds to improve security, recommended: 1 second
 
     // Database 
-    define("DB_SERVER", "localhost:3308");
+    define("DB_SERVER", "localhost:3306");
     define("DB_NAME", "saurfort");
     define("DB_USERNAME", "root");
     define("DB_PASSWORD", "");
@@ -52,8 +52,7 @@
     define("API_KEY_DISABLED", "14");
     define("API_KEY_SUPERKEY_NEEDED", "15");
     define("API_KEY_GENERATE_ARGUMENT_ERROR", "16");
-    define("API_KEY_GENERATE_ERROR", "17");
-    define("API_KEY_DELETE_ARGUMENT_ERROR", "18");
+    define("API_KEY_DELETE_ARGUMENT_ERROR", "17");
     define("MAILER_DISABLED", "20");
     define("MAILER_SEND_EMAIL_ARGUMENT_ERROR", "21");
     define("MAILER_SEND_EMAIL_FAILED", "22");

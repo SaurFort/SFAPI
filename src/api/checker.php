@@ -23,7 +23,7 @@
                 $owner = $row['owner'];
                 $isActive = $row['is_active'];
 
-                if($isActive !== 1 && !$is_disabled) {
+                if($isActive !== 1 && $is_active) {
                     makeLog("API-KeyVerification", $key, "$owner tried to use a disabled key", 2);
                     echo json_encode(["code" => API_KEY_DISABLED, "message" => "Your api key is disabled"]);
                     exit;
