@@ -1,5 +1,5 @@
 <?php
-    function verifyAPIKey(string $key) {
+    function verifyAPIKey(string $key, bool $is_active = true) {
         // Intentional delay to make request slower.
         sleep(API_DELAY);
 
@@ -23,7 +23,7 @@
                 $owner = $row['owner'];
                 $isActive = $row['is_active'];
 
-                if($isActive !== 1) {
+                if($isActive !== 1 && !$is_disabled) {
                     makeLog("API-KeyVerification", $key, "$owner tried to use a disabled key", 2);
                     echo json_encode(["code" => API_KEY_DISABLED, "message" => "Your api key is disabled"]);
                     exit;
@@ -32,7 +32,7 @@
                 // Debug: Display retrieved permissions
                 // var_dump($row['perms']);
 
-                makeLog("API-KeyVerification", $key, "$owner just used a key", 1);
+                makeLog("API-KeyVerification", $key, "$owner just used a key, is active: $is_active", 1);
                 return $perms;
             } else {
                 makeLog("API-KeyVerification", $key, "API key not valid", 1);

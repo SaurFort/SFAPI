@@ -37,8 +37,10 @@
             $activeString = "active";
         }
 
-        for($i = 0; $i < 13; $i++) {
-            if(isset($data['perm' . $i]) === true) {
+        for($i = 0; $i < TOTAL_PERMISSIONS; $i++) {
+            if($i === PERMISSION_DISABLE_KEY || $i === PERMISSION_ENABLE_KEY) {
+                $perms .= "true;";
+            } elseif(isset($data['perm' . $i]) === true) {
                 $perms .= "true;";
             } else {
                 $perms .= "false;";

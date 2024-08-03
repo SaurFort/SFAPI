@@ -6,9 +6,9 @@
     define("AVAILABLE_LANGUAGES", "en;fr");
 
     // API settings
-    define("LOGS_FOLDER", "../../logs/");   // Path to logs folder
-    define("KEY_PREFIX", "apiv0_");         // API Key prefix
-    define("API_DELAY", 1);                 // API delay in seconds to improve security, recommended: 1 second
+    define("LOGS_FOLDER", "../../logs/");               // Path to logs folder
+    define("KEY_PREFIX", "apiv0_");                     // API Key prefix
+    define("API_DELAY", 1);                             // API delay in seconds to improve security, recommended: 1 second
 
     // Database 
     define("DB_SERVER", "localhost:3308");
@@ -26,6 +26,7 @@
     define("EMAIL_PASSWORD" , "");                      // If auth is set to true you need to fill this
 
     // API Permissions
+    define("TOTAL_PERMISSIONS", 13);                    // Update this value if you add more permissions
     define("PERMISSION_REGISTER_USER", 0);
     define("PERMISSION_LOGIN_USER", 1);
     define("PERMISSION_SEND_MAIL", 2);
@@ -52,6 +53,7 @@
     define("API_KEY_SUPERKEY_NEEDED", "15");
     define("API_KEY_GENERATE_ARGUMENT_ERROR", "16");
     define("API_KEY_GENERATE_ERROR", "17");
+    define("API_KEY_DELETE_ARGUMENT_ERROR", "18");
     define("MAILER_DISABLED", "20");
     define("MAILER_SEND_EMAIL_ARGUMENT_ERROR", "21");
     define("MAILER_SEND_EMAIL_FAILED", "22");
