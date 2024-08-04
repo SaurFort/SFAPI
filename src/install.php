@@ -172,7 +172,7 @@
         echo("<div align='center'><h2>The super key of the API is:</h2><p>$key</p></div>");
 
         
-        $file = '../src/config.php';
+        $file = 'config.php';
         $content = file_get_contents($file);
         $newConfig = "define(\"API_INSTALLED\", true);";
 
