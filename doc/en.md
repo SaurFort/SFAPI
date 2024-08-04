@@ -1,11 +1,9 @@
-# SFAPI `<!-- omit in toc -->`
+# SFAPI <!-- omit in toc -->
 
 This API is made to centralize data from different applications and by example simplyfy account credentials by making it accessible to all applications (if they have the corresponding permissions).
 
-## Summary `<!-- omit in toc -->`
+## Summary <!-- omit in toc -->
 
-- [SFAPI `<!-- omit in toc -->`](#sfapi----omit-in-toc---)
-  - [Summary `<!-- omit in toc -->`](#summary----omit-in-toc---)
   - [API key](#api-key)
     - [Version 0 (v0)](#version-0-v0)
     - [Permissions](#permissions)
