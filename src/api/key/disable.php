@@ -33,7 +33,7 @@
             $targetKey = $key;
         }
 
-        $status = 1;
+        $status = 0;
 
         $query = "UPDATE api_keys SET is_active = ? WHERE api_key = ?";
         $stmt = $conn->prepare($query);
