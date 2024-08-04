@@ -1,5 +1,5 @@
 <?php
-    require("../src/config.php");
+    require("../config.php");
 
     if(isset($_GET['install']) && $_GET['install'] === "true" && !API_INSTALLED) {
         include("../install.php");

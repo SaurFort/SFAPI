@@ -1,6 +1,6 @@
 <?php
-    include("../src/api/database.php");
-    include("../src/api/logger.php");
+    include("../api/database.php");
+    include("../api/logger.php");
 
     $loggerName = "API-Installer";
 
