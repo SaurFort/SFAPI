@@ -868,6 +868,7 @@ This code indicates that the SQL query executed successfully but returned no row
 | v0.7.0  | `early development` | __private__ |
 | v0.8.0  | `early development` | __private__ |
 | v0.9.0  | `alpha` | __security_test__ |
+| v0.9.1  | `alpha` | __security_test__ |
 
 ## About Security
 
