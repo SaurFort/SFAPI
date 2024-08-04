@@ -26,7 +26,7 @@
 
         if(empty($data['keyOwner'])) {
             makeLog($loggerName, $key, "Argument keyOwner not provided", 2);
-            echo json_encode(["code" => API_KEY_GENERATE_ARGUMENT_ERROR . "A", "message" => "Argument keyOwner not provided"]);
+            echo json_encode(["code" => API_KEY_GENERATE_ARGUMENT_ERROR, "message" => "Argument keyOwner not provided"]);
             exit;
         }
         if(empty($data['active'])) {

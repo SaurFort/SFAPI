@@ -46,7 +46,7 @@
 
         if(!is_int($limit)) {
             makeLog($loggerName, $key, "The argument limit is not a valid integer", 2);
-            echo json_encode(["code" => API_KEY_LIST_ARGUMENT_ERROR . "A", "message" => "The argument limit is not a valid integer"]);
+            echo json_encode(["code" => API_KEY_LIST_ARGUMENT_ERROR . "B", "message" => "The argument limit is not a valid integer"]);
             exit;
         }
 
