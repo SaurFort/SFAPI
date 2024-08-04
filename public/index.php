@@ -1,3 +1,11 @@
+<?php
+    require("../src/config.php");
+
+    if(isset($_GET['install']) && $_GET['install'] === "true" && !API_INSTALLED) {
+        include("../install.php");
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>

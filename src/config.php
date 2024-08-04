@@ -11,8 +11,8 @@
     define("API_DELAY", 1);                             // API delay in seconds to improve security, recommended: 1 second
 
     // Database 
-    define("DB_SERVER", "localhost:3306");
-    define("DB_NAME", "saurfort");
+    define("DB_SERVER", "localhost:3308");
+    define("DB_NAME", "sfapi");
     define("DB_USERNAME", "root");
     define("DB_PASSWORD", "");
 
@@ -70,4 +70,7 @@
     define("SQL_QUERY_ERROR", "90");
     define("SQL_QUERY_EMPTY_ROW_ERROR", "91");
     define("SQL_PREPARE_ERROR", "92");
+
+    // When the API is installed, this change to be true
+    define("API_INSTALLED", false);
 ?>
