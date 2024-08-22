@@ -86,13 +86,12 @@
         }
 
         if ($result->num_rows > 0) {
-            
             $row = $result->fetch_assoc();
 
             // Verify the password
             if (password_verify($data['password'], $row['password'])) {
                 makeLog($loggerName, $key, "Correct credentials for $username | $email", 3);
-                echo json_encode(["code" => QUERY_WORKED_SUCCESSFULLY, "message" => "Correct credentials."]);
+                echo json_encode(["code" => QUERY_WORKED_SUCCESSFULLY, "message" => "Correct credentials.", "id" => $row['id'], "username" => $row['username'], "rank" => $row['rank']]);
             } else {
                 makeLog($loggerName, $key, "Unvalid password for $username | $email", 2);
                 // Debugging output
